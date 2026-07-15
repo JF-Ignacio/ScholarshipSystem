@@ -101,7 +101,7 @@ $total_files = $results->num_rows;
                                 <?php while ($doc = $results->fetch_assoc()) :
                                 $status = $doc['status'];
                                 $scholar_status = $doc['scholar_status'];
-                                $badge = ($status === 'approved') ? 'success' : (($status === 'rejected') ? 'danger' : 'warning');
+                                $badge = ($status === 'Approved') ? 'success' : (($status === 'Rejected') ? 'danger' : 'warning');
                                 ?>
 
                                 <tr>
