@@ -1,0 +1,527 @@
+INCLUDES 
+--Header
+-- Footer
+
+AUTH
+-- Login
+
+
+ADMIN
+- DASHBOARD 
+- SCHOLARS
+----- ADD
+----- INDEX
+----- EDIT (ON PROCESS)
+
+
+CONFIG 
+---- AUTH-CHECK (VALIDATES THE SESSION)
+---- SESSION (STARTS THE SESSION)
+---- DATABASE (CONNECTS THE DATABASE)
+---- CONFIG ()
+
+
+
+WEBSITE APP (TRACKING)
+
+1. Search the webste http:tvam_scholarship/index.php
+- THIS IS THE MAIN PAGE OR INDEX PAGE WHEN YOU SEARCH THE WEBSITE
+
+2. Login 
+- IF ADMIN ---- redirect to admin/dashboard.php
+- IF STUDENT ----
+
+NEXT STEPS:
+    Delete scholar
+    Search scholar
+    Pagination
+    Role-based authentication
+    Application workflow
+    Reports
+    Audit logs
+    API layer
+    AJAX / Fetch API
+    Admin analytics
+
+    Good.
+
+
+// THIS IS THE FULL GUIDE WITHOUT CODE
+
+
+You just implemented your first:
+
+# Role-Based Access Control (RBAC)
+
+system.
+
+That is a real backend security layer.
+
+You now separated:
+
+* authenticated users
+  from
+* authorized users
+
+That is a major software engineering concept.
+
+---
+
+# First Important Correction
+
+You should NOT duplicate code everywhere.
+
+Right now you wrote:
+
+```php
+include "../../config/session.php";
+include "../../config/database.php";
+
+if(!isset($_SESSION['id'])) {
+    ...
+}
+
+if($_SESSION['role'] !== 'admin') {
+    ...
+}
+```
+
+inside multiple files.
+
+This creates:
+
+* repeated code
+* harder maintenance
+* inconsistent security later
+
+---
+
+# Proper Structure
+
+Inside:
+
+```txt
+config/
+```
+
+create:
+
+---
+
+# `admin-auth.php`
+
+```php
+<?php
+
+include "session.php";
+
+if (!isset($_SESSION['id'])) {
+    header("Location: /TVAM_SCHOLARSHIP/auth/login.php");
+    exit();
+}
+
+if ($_SESSION['role'] !== 'admin') {
+    die("Access Denied.");
+}
+```
+
+---
+
+# `student-auth.php`
+
+```php
+<?php
+
+include "session.php";
+
+if (!isset($_SESSION['id'])) {
+    header("Location: /TVAM_SCHOLARSHIP/auth/login.php");
+    exit();
+}
+
+if ($_SESSION['role'] !== 'student') {
+    die("Access Denied.");
+}
+```
+
+---
+
+# THEN
+
+Inside admin pages:
+
+```php
+include "../../config/admin-auth.php";
+include "../../config/database.php";
+```
+
+---
+
+Inside student pages:
+
+```php
+include "../config/student-auth.php";
+include "../config/database.php";
+```
+
+---
+
+# Why This Is Important
+
+This introduces:
+
+# Centralized Security Architecture
+
+Meaning:
+
+* one security file
+* reused everywhere
+* easier maintenance
+* fewer mistakes
+
+Real systems work this way.
+
+---
+
+# NOW YOUR NEXT STEP
+
+Now you implement:
+
+# Role-Based Login Redirects
+
+Currently after login:
+
+```php
+header("Location: ../admin/dashboard.php");
+```
+
+ALWAYS redirects to admin.
+
+That is incorrect for multi-role systems.
+
+---
+
+# Proper Logic
+
+Inside `login.php`
+
+Replace:
+
+```php
+header("Location: ../admin/dashboard.php");
+```
+
+with:
+
+```php
+if ($fetchDB['role'] === 'admin') {
+    header("Location: ../admin/dashboard.php");
+    exit();
+}
+
+if ($fetchDB['role'] === 'student') {
+    header("Location: ../student/dashboard.php");
+    exit();
+}
+```
+
+---
+
+# WHY THIS MATTERS
+
+This is called:
+
+# Dynamic Routing Based on Authorization
+
+The system decides:
+
+* where user goes
+* based on permissions/roles
+
+Real systems do this everywhere.
+
+---
+
+# NEXT STEP AFTER THAT
+
+# Build Student Dashboard
+
+Create:
+
+```txt
+student/dashboard.php
+```
+
+---
+
+# What Should Student Dashboard Contain?
+
+Initially:
+
+* Welcome message
+* Scholarship status
+* Profile summary
+* Apply button
+* Logout button
+
+Example:
+
+```txt
+Hello, Juan
+
+Status: Pending
+
+[Apply Scholarship]
+[View Profile]
+```
+
+---
+
+# IMPORTANT SYSTEM DESIGN CONCEPT
+
+Right now:
+
+* admin creates scholars manually
+
+But real scholarship systems are:
+
+# User-driven systems
+
+Meaning:
+
+Students submit applications themselves.
+
+Admins only:
+
+* review
+* approve
+* reject
+
+---
+
+# THIS IS YOUR NEXT MAJOR FEATURE
+
+# Scholarship Application System
+
+This transforms your project from:
+
+* CRUD practice
+
+into:
+
+* actual workflow software
+
+---
+
+# Recommended Next Database Table
+
+# applications
+
+Example structure:
+
+```sql
+CREATE TABLE applications (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    scholarship_type VARCHAR(100),
+    course VARCHAR(100),
+    year_level VARCHAR(50),
+    status VARCHAR(50) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+# VERY IMPORTANT CONCEPT
+
+# Relational Database Design
+
+Notice:
+
+```txt
+user_id
+```
+
+This connects:
+
+* application
+  to
+* user
+
+This is:
+
+# Foreign Key Relationship Concept
+
+---
+
+# Real Workflow
+
+# Student
+
+Submits application.
+
+Stored in:
+
+```txt
+applications
+```
+
+Status:
+
+```txt
+Pending
+```
+
+---
+
+# Admin
+
+Views pending applications.
+
+Can:
+
+* approve
+* reject
+
+---
+
+# If Approved
+
+You can:
+
+* insert into scholars table
+  OR
+* simply update application status
+
+---
+
+# IMPORTANT DESIGN DECISION
+
+You are approaching:
+
+# Business Logic Design
+
+This is what separates:
+
+* coding
+  from
+* software engineering
+
+---
+
+# Your Current System Evolution
+
+---
+
+## BEFORE
+
+Simple CRUD practice.
+
+---
+
+## NOW
+
+Actual system architecture:
+
+* roles
+* permissions
+* workflows
+* protected routes
+* database relationships
+
+---
+
+# WHAT YOU SHOULD LEARN NEXT
+
+These concepts are now HIGH PRIORITY.
+
+---
+
+# 1. Relational Databases
+
+Learn:
+
+* primary keys
+* foreign keys
+* one-to-many relationships
+
+Example:
+
+```txt
+users.id → applications.user_id
+```
+
+---
+
+# 2. Workflow Systems
+
+Learn:
+
+* pending
+* approved
+* rejected
+* archived
+
+This is:
+
+# State Management
+
+Core backend concept.
+
+---
+
+# 3. Validation Layers
+
+Right now validation is:
+
+* simple
+* page-level
+
+Eventually learn:
+
+* reusable validators
+* server-side validation architecture
+
+---
+
+# 4. Session Security
+
+Eventually learn:
+
+* session regeneration
+* CSRF protection
+* timeout handling
+
+---
+
+# 5. Database Normalization
+
+Avoid:
+
+* duplicated data
+* redundant fields
+
+This becomes VERY important later.
+
+---
+
+# What NOT To Do Yet
+
+Avoid:
+
+* Laravel
+* React
+* APIs
+* JWT
+* MVC frameworks
+
+until you fully understand:
+
+* sessions
+* request lifecycle
+* CRUD flow
+* database relationships
+* routing
+
+You are currently building extremely important fundamentals.

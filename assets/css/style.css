@@ -1,0 +1,874 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;    
+    font-family:'Times New Roman', Times, serif;
+}
+
+.has-fixed-navbar {
+    padding-top: 85px;
+}
+
+.navigation {
+    background: rgb(1, 1, 71);
+    min-height: 85px;
+}
+
+.navigation .navbar-nav {
+    gap: 2rem;
+}
+
+.navigation .navbar-brand {
+    color: white !important;
+    font-size: 18px;
+    font-weight: bold;
+    flex-shrink: 1;
+}
+
+.navigation .navbar-brand span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.navigation .nav-link {
+    color: white !important;
+    font-size: 16px;
+}
+
+
+.login-page {
+    background-image: url("/TVAM_SCHOLARSHIP/assets/images/loginBG.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.login-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:  rgba(0, 0, 0, 0.45);
+    z-index: 0;
+}
+
+.login-page .container-fluid,
+.login-page .card {
+    position: relative;
+    z-index: 1;
+}
+
+.login-page .card .card-title {
+    margin-bottom: 0.5rem;
+}
+
+.navbar-toggler {
+    border: 2px solid black;
+    background: linear-gradient(rgb(1, 1, 63), white 100%);
+}
+
+.nav-link.nav-item {
+    background-color: rgb(0, 0, 0);
+}
+
+.view-hero {
+    background: linear-gradient(45deg, rgb(4, 4, 50), white);
+}
+
+.view-hero .main-card {
+    min-height: 400px;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0px 0px 10px 5px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.view-hero .main-card .cardImg {
+    max-width: 80px;
+    align-items: center;
+    text-align: center;
+}
+
+@media print {
+    .no-print {
+        display: none !important;
+    }
+}
+.navigation {
+    background-color: #010254;
+}
+
+.navigation .brand-text {
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: normal;
+    line-height: 1.2;
+}
+
+.navigation .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.navigation .nav-link {
+    border-radius: 6px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    position: relative;
+    transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.navigation .nav-link:hover,
+.navigation .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: white !important;
+}
+
+.navigation .nav-link.active {
+    box-shadow: inset 0 -3px 0 rgba(255, 255, 255, 0.9);
+    font-weight: 700;
+}
+
+.navigation .nav-link:active {
+    transform: translateY(1px);
+}
+
+@media (min-width: 992px) {
+    .w-lg-auto {
+        width: auto !important;
+    }
+}
+
+.registration-class {
+    background-color: #f8f9fa;
+}
+
+.registration-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 450px;
+}
+.registration-card form {
+    height: 500px;
+    gap: 1rem !important;
+}
+
+@media (max-width: 575.98px) {
+    .navigation .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .navigation .brand-text {
+        max-width: 190px;
+        font-size: 0.85rem;
+    }
+    .registration-class .reg-div {
+        margin-top: 0px !important;
+        padding: 1.5rem !important;
+        width: 100%;
+    }
+
+    .registration-class form {
+        height: auto;
+        
+    }
+}
+
+.btn-apply {
+    background: linear-gradient(45deg, rgb(5, 2, 92), white, rgb(5, 2, 92));
+    background-size: 200% 100%;
+    background-position: left center;
+    color: black;
+    box-shadow: 0px 0px 10px 3px black;
+    transition: background-position 0.6s ease-in-out, color 0.6s ease-in-out, box-shadow 0.6s ease-in-out;
+}
+
+.btn-apply:hover {
+    background-position: right center;
+    color: rgb(4, 2, 73);
+    box-shadow: 0px 0px 14px 4px rgb(5, 2, 92);
+}
+
+.apply-title {
+    color: black;
+    font-size: clamp(2.25rem, 6vw, 4.375rem);
+    line-height: 1.05;
+}
+
+.apply-subtitle {
+    color: purple;
+    font-size: clamp(1.75rem, 4.5vw, 3.125rem);
+    line-height: 1.1;
+}
+
+.apply-img {
+    height: 85px;
+    width: auto;
+}
+
+@media (max-width: 575.98px) {
+    .apply-page .fs-3 {
+        font-size: 1.35rem !important;
+    }
+
+    .apply-page .fs-4,
+    .apply-page .btn-apply {
+        font-size: 1.1rem !important;
+    }
+}
+
+.applied {
+    width: 100%;
+    min-height: 140px;
+    background-color: white;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+}
+
+.applied.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scholar-info {
+    background-color: rgb(0, 5, 32);
+}
+
+/*INDEX SECTION*/
+
+.index-hero {
+    min-height: calc(100vh - 90px);
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 4rem);
+    overflow: hidden;
+}
+
+.index-hero .row {
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+
+.index-hero .row.appear-visible-hero {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.h1-hero {
+    font-size: clamp(2.15rem, 6vw, 5.15rem);
+    color: black;
+    font-weight: 800;
+    line-height: 1.02;
+    max-width: 980px;
+}
+
+.h2-hero {
+    font-size: clamp(1.75rem, 4.6vw, 4.35rem);
+    color: rgb(2, 8, 105);
+    font-weight: 700;
+    line-height: 1.08;
+    max-width: 900px;
+}
+
+.p-hero {
+    font-size: clamp(1.1rem, 2.4vw, 2.25rem);
+    font-weight: 400;
+    margin-top: 1rem;
+}
+
+.btn-hero {
+    gap: 1rem;
+    margin-top: 1.75rem;
+}
+
+@media (max-width: 600px) {
+    .img-hero {
+        max-width: 230px;
+    }
+}
+
+.btn-hero .apply-btn, 
+.btn-hero .register-btn {
+    border: 1px solid black;
+    width: 170px;
+    height: 43px;
+    font-weight: 800;
+    border-radius: 20px;
+}
+
+.apply-btn {
+    background-color: #010254;
+    color: whitesmoke;
+    transition: background 1s ease-in;
+    background-size: 200% 200%;
+    background-position: left;
+    transition: background-color 1s ease-in, color 0.6s ease-in-out;
+}
+
+.apply-btn:hover {
+    background-position:  right center;
+    background: linear-gradient(45deg,#010254, white, #010254);
+}
+
+.register-btn {
+    background-color: #ffffff;
+    color: rgb(2, 19, 72);
+    transition: background 1s ease-in;
+    background-size: 200% 200%;
+    background-position: left;
+    transition: background-color 0.5s ease-in, color 0.6s ease-in-out;
+}
+
+.register-btn:hover {
+    color: white;
+    background-position: right center;
+    background: linear-gradient(45deg, white, #010254, white);
+}
+
+
+.index-btn {
+    font-size: 1px;
+}
+
+.index-navbar {
+    width: 100%;
+    color: whitesmoke;
+    background-color: #010254;
+    min-height: 82px;
+    padding-block: 0.65rem;
+}
+
+.index-nav-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.index-navbar img {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+
+.index-navbar .brand-text {
+    color: white;
+    font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: normal;
+    max-width: 320px;
+}
+
+.index-navbar .navbar-brand {
+    min-width: 0;
+    max-width: min(560px, 72vw);
+}
+
+.index-navbar .nav-link {
+    color: white !important;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.55rem 0.8rem;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.index-navbar .nav-link:hover,
+.index-navbar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #dfe6ff !important;
+}
+
+.index-navbar .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: transparent;
+    box-shadow: none;
+}
+
+.index-navbar .navbar-toggler:focus {
+    box-shadow: 0 0 0 0.15rem rgba(255, 255, 255, 0.35);
+}
+
+@media (max-width: 991.98px) {
+    .index-navbar .navbar-collapse {
+        margin-top: 0.85rem;
+        padding-top: 0.8rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .index-navbar .nav-link {
+        padding: 0.75rem 0.85rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .index-nav-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .index-navbar .brand-text {
+        max-width: 220px;
+        font-size: 0.85rem;
+    }
+
+    .index-navbar img {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+.index-head .info-box {
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+
+.index-head .info-box.appear-visible-index {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.index-head .info-box h3,
+.index-head .info-box .partner-logos {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.2s; /* 0.2s delay */
+}
+
+.index-head .info-box.appear-visible-index h3,
+.index-head .info-box.appear-visible-index .partner-logos {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+.index-head {
+    position: relative;
+    background-image: url("../images/schoolbg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: clamp(260px, 34vw, 430px);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    padding: clamp(2rem, 6vw, 4rem) 1rem;
+}
+
+.index-head::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(1, 2, 84, 0.78), rgba(0, 0, 0, 0.46));
+    z-index: 0;
+}
+
+.index-head .info-box {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 980px);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 3vw, 2rem);
+    background-color: rgba(0, 0, 0, 0.62);
+    border-left: 5px solid #ffffff;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+}
+
+.index-head .info-box h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 3vw, 2.25rem);
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: uppercase;
+}
+
+.partner-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.partner-logos img {
+    width: clamp(64px, 9vw, 108px);
+    height: clamp(64px, 9vw, 108px);
+    object-fit: contain;
+    background-color: white;
+    padding: 0.35rem;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+}
+
+.img-hero {
+    width: min(100%, 380px);
+    max-height: 420px;
+    object-fit: contain;
+}
+
+@media (max-width: 767.98px) {
+    .index-head .info-box {
+        flex-direction: column;
+        text-align: center;
+        border-left: 0;
+        border-bottom-left-radius: 0;
+        border-top: 5px solid #ffffff;
+        border-top-right-radius: 12px;
+    }
+}
+
+.about-us {
+    background-color: #02022f;
+    min-height: 100vh;
+}
+
+.about-us .card,
+.about-us .card-body {
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+
+.about-carousel {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 18px 40px rgba(255, 255, 255, 0.28);
+
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+.about-us .v-m-container .card-body {
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+.about-carousel.appear-visible-aboutUs,
+.about-us .card.appear-visible-aboutUs,
+.about-us .card-body.appear-visible-aboutUs,
+.about-us .v-m-container .card-body {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-carousel .carousel-inner,
+.about-carousel .carousel-item {
+    height: clamp(260px, 36vw, 520px);
+}
+
+.about-carousel .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-carousel .carousel-control-prev,
+.about-carousel .carousel-control-next {
+    width: 10%;
+}
+
+.v-m-container {
+    margin-top: 2rem;
+}
+
+.vm-card {
+    border: 1px solid white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.vm-card h2 {
+    margin: 0;
+    padding: 0.85rem 1rem;
+    color: white;
+    background-color: #010254;
+    text-align: center;
+}
+
+.vm-card .card-body {
+    padding: 1rem;
+}
+
+.vm-card p {
+    margin: 0;
+    line-height: 1.55;
+}
+
+@media (max-width: 991.98px) {
+    .about-us .row {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+.colleges {
+    min-height: 100vh;
+    
+}
+
+.FAQs {
+    min-height: 100vh;
+}
+
+.main-img img {
+    animation: drive 3s infinite ease-in-out;
+    cursor: grab;
+}
+
+@keyframes drive {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+
+/* Custom Dashboard Architecture Stylesheet Styles Override */
+.colleges {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Clear, explicit tracking constraints applied straight to the core assets */
+.scholar-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover; /* Prevents the image from distorting if it isn't perfectly square */
+    background-color: #f8f9fa;
+    padding: 5px;
+    border: 1px solid #dee2e6;
+}
+
+/* Clean animation interactions for a premium user feel */
+.colleges .card {
+    opacity: 0;
+    transform: translateY(100px);
+
+    transition:
+    opacity 1s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 1s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.80s ease;
+
+    will-change: opacity, transform;
+}
+
+.colleges .card.appear-visible-college {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.colleges .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.15)!important;
+}
+
+
+.scholarships {
+    min-height: 100vh;
+    background-color: #02022f;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center !important;
+}
+
+.scholarships .card {
+    opacity: 0;
+    transform: translateY(50px);
+
+    transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.25s ease;
+
+    will-change: opacity, transform;
+}
+.scholarships .card.appear-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scholarships .card.card.appear-visible:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 10px 0px rgba(255, 255, 255, 0.988) !important;
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    50% {
+        opacity: 0.5;
+        transform: translateY(25px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.scholarships .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1.5rem rgba(255, 255, 255, 0.599) !important;
+}
+
+
+.scholarships .img-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    animation: appearOnScroll linear both;
+}
+
+.scholarships .img-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scholarships .img-container::before {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0,0,0));
+}
+
+.scholarships .floating-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    z-index: 222;
+    color: whitesmoke;
+    transition:  background 0.8s ease-in-out, 1s ease, box-shadow 0.25 ease!important;
+}
+
+.scholarships .floating-btn a {
+    background-color: black !important;
+}
+
+.scholarships .floating-btn:hover {
+    transform: scale(1.1);
+    background: linear-gradient(to bottom, white black white);
+}
+
+
+.accordion-container .accordion-item {
+    background-color: #010254;
+    color: whitesmoke;
+}
+
+.accordion-header {
+    width: 100% !important;
+    box-shadow: 0 .2rem 1rem .2rem black;
+}
+
+.accordion-button {
+    font-size: clamp(1rem, 3vw, 1.5rem) !important;
+    padding: 12px;
+    width: 100%
+}
+
+.FAQs .accordion-container {
+    opacity: 0;
+    transform: translateY(60px);
+
+    transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.25s ease;
+
+    will-change: opacity, transform;
+}
+
+.FAQs .accordion-container .header {
+    opacity: 0;
+    transform: translateY(50px);
+
+    transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.25s ease;
+
+    will-change: opacity, transform;
+}
+
+.accordion {
+    opacity: 0;
+    transform: translateY(60px);
+
+    transition:
+    opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+    box-shadow 0.25s ease;
+
+    will-change: opacity, transform;
+}
+
+.FAQs .accordion-container.appear-visible-faqs .accordion {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.FAQs .accordion-container.appear-visible-faqs {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.FAQs .accordion-container.appear-visible-faqs .header {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/*STUDENT UPLOAD DOCUMENTS*/
+
+.student-upload {
+    overflow: hidden !important;
+}
+
+.student-upload.card-body {
+    background: linear-gradient(45deg, rgb(10, 10, 112), white, rgb(10, 10, 112)) !important;
+}
