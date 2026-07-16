@@ -108,7 +108,12 @@ $total_files = $results->num_rows;
                                     <td data-label="USER_ID"><?php echo htmlspecialchars($doc['user_id']); ?></td>
                                     <td data-label="FULLNAME"><?php echo htmlspecialchars($doc['fullname']); ?></td>
                                     <td data-label="DOCUMENT TYPE"><?php echo htmlspecialchars($doc['document_type']); ?></td>
-                                    <td data-label="FILE NAME"><?php echo htmlspecialchars($doc['file_name']); ?></td>
+                                    <td data-label="FILE NAME">
+                                        <a href="download.php?id=<?php echo htmlspecialchars($doc['id']); ?>" target="_blank" class="btn btn-sm btn-link">
+                                            <i class="bi bi-file-earmark-text me-1"></i>
+                                            <?php echo htmlspecialchars($doc['file_name']); ?>
+                                        </a>
+                                    </td>
                                     <td data-label="COURSE"><?php echo htmlspecialchars($doc['course']); ?></td>
                                     <td data-label="SCHOLAR STATUS"><?php echo htmlspecialchars($scholar_status); ?></td>
                                     <td data-label="FILE STATUS"><span class="badge bg-<?php echo $badge; ?>"><?php echo htmlspecialchars($status); ?></span></td>

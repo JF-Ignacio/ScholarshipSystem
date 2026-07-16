@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_file'])) {
 }
 
 // Always fetch documents - moved outside POST block
-$show_docu_sql = "SELECT user_id, document_type, file_name, file_path, created_at 
+$show_docu_sql = "SELECT id, user_id, document_type, file_name, file_path, created_at 
                 FROM documents 
                 WHERE user_id = ?";
 $stmt_show = $conn->prepare($show_docu_sql);
@@ -173,7 +173,7 @@ $result = $stmt_show->get_result();
                         <td> <?php echo htmlspecialchars($fetch['user_id']); ?></td>
                         <td> <?php echo htmlspecialchars ($fetch['document_type']); ?></td>
                         <td>
-                            <a href="<?php echo htmlspecialchars($fetch['file_path']); ?>" target="_blank" rel="noopner noreferrer">
+                            <a href="/TVAM_SCHOLARSHIP/admin/documents/download.php?id=<?php echo htmlspecialchars($fetch['id']); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo htmlspecialchars($fetch['file_name']); ?>
                             </a>
                         </td>
