@@ -64,14 +64,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_file'])) {
                 if(move_uploaded_file($file['tmp_name'], $target_file_path)) {
 
                     $db_save_path = "/TVAM_SCHOLARSHIP/assets/uploads/document/" .$new_file_name;
-
-                    $insert_sql = "INSERT INTO documents (user_id, document_type, file_name, file_path, status)
-                                    VALUES (?, ?, ?, ?, 'Pending')";
+                    
+                    $token = bin2hex(random_bytes(16));
+                    
+                    $insert_sql = "INSERT INTO documents (user_id, document_type, file_name, download_token, file_path, status)
+                                    VALUES (?, ?, ?, ?, ?, 'Pending')";
                     $insert_stmt = $conn->prepare($insert_sql);
-                    $insert_stmt->bind_param("isss", $id, $document_type, $file['name'], $db_save_path);
+                    $insert_stmt->bind_param("isssss", $id, $document_type, $file['name'], $token, $db_save_path);
 
                     if(!$insert_stmt->execute()) {
-                        $message = "Database Upload failed.";
+                        $message = "Database Upload failed.";   
                         $conn->rollback();
                     }
 
@@ -81,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_file'])) {
                         $insert_stmt->close();
                         $conn->commit();
                     }
-
                 }
 
             }
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_file'])) {
 }
 
 // Always fetch documents - moved outside POST block
-$show_docu_sql = "SELECT id, user_id, document_type, file_name, file_path, created_at 
+$show_docu_sql = "SELECT id, download_token, user_id, document_type, file_name, file_path, created_at 
                 FROM documents 
                 WHERE user_id = ?";
 $stmt_show = $conn->prepare($show_docu_sql);
@@ -173,7 +174,7 @@ $result = $stmt_show->get_result();
                         <td> <?php echo htmlspecialchars($fetch['user_id']); ?></td>
                         <td> <?php echo htmlspecialchars ($fetch['document_type']); ?></td>
                         <td>
-                            <a href="/TVAM_SCHOLARSHIP/admin/documents/download.php?id=<?php echo htmlspecialchars($fetch['id']); ?>" target="_blank" rel="noopener noreferrer">
+                            <a href="/TVAM_SCHOLARSHIP/admin/documents/download.php?token=<?php echo htmlspecialchars($fetch['download_token']); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo htmlspecialchars($fetch['file_name']); ?>
                             </a>
                         </td>
@@ -192,5 +193,3 @@ $result = $stmt_show->get_result();
             </table>
         </div>
     </div>
-</body>
-</html>

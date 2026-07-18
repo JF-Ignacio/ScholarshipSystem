@@ -11,16 +11,15 @@ if (!$is_admin && $current_user_id <= 0) {
     die("401 UNAUTHORIZED: PLEASE LOG IN.");
 }
 
-$documentID = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$documentToken = $_GET['token'] ?? '';
 
-if ($documentID <= 0) {
+if(empty($documentToken) || !ctype_xdigit($documentToken)) {
     http_response_code(400);
-    die("400 BAD REQUEST: INVALID DOCUMENT ID.");
+    die("400 BAD REQUEST: INVALID DOWNLOAD TOKEN");
 }
-
 $sql = "SELECT d.id, d.user_id, d.file_name, d.document_type, d.file_path
         FROM documents d
-        WHERE d.id = ?
+        WHERE d.download_token = ?
         LIMIT 1";
 
 $stmt = $conn->prepare($sql);
@@ -30,7 +29,7 @@ if (!$stmt) {
     die("Database Error.");
 }
 
-$stmt->bind_param("i", $documentID);
+$stmt->bind_param("s", $documentToken);
 $stmt->execute();
 $result = $stmt->get_result();
 $doc = $result->fetch_assoc();
