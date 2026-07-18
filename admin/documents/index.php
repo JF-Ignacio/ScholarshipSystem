@@ -8,7 +8,7 @@ $id = $_SESSION['id'] ?? 0;
 $searchUser = isset($_GET['findUser']) ? trim($_GET['findUser']) : '';
 
 
-$docu_sql = "SELECT d.document_type, d.file_name, d.status, d.id, d.user_id,
+$docu_sql = "SELECT d.document_type, d.file_name, d.status, d.id, d.user_id, d.download_token,
             s.fullname,
             s.course,
             s.status AS scholar_status
@@ -109,7 +109,7 @@ $total_files = $results->num_rows;
                                     <td data-label="FULLNAME"><?php echo htmlspecialchars($doc['fullname']); ?></td>
                                     <td data-label="DOCUMENT TYPE"><?php echo htmlspecialchars($doc['document_type']); ?></td>
                                     <td data-label="FILE NAME">
-                                        <a href="download.php?id=<?php echo htmlspecialchars($doc['id']); ?>" target="_blank" class="btn btn-sm btn-link">
+                                        <a href="/TVAM_SCHOLARSHIP/shared/download.php?token=<?php echo htmlspecialchars($doc['download_token']); ?>" target="_blank" class="btn btn-sm btn-link">
                                             <i class="bi bi-file-earmark-text me-1"></i>
                                             <?php echo htmlspecialchars($doc['file_name']); ?>
                                         </a>

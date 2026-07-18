@@ -1,7 +1,7 @@
 <?php
 
-require_once "../../config/session.php";
-require_once "../../config/database.php";
+require_once "../config/session.php";
+require_once "../config/database.php";
 
 $is_admin = isset($_SESSION['admin_id']) || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin');
 $current_user_id = $_SESSION['user_id'] ?? $_SESSION['id'] ?? 0;

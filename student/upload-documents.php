@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_file'])) {
                     
                     $token = bin2hex(random_bytes(16));
                     
-                    $insert_sql = "INSERT INTO documents (user_id, document_type, file_name, download_token, file_path, status)
+                    $insert_sql = "INSERT INTO documents (user_id, document_type, file_name, document_token, file_path, status)
                                     VALUES (?, ?, ?, ?, ?, 'Pending')";
                     $insert_stmt = $conn->prepare($insert_sql);
                     $insert_stmt->bind_param("isssss", $id, $document_type, $file['name'], $token, $db_save_path);
@@ -174,7 +174,7 @@ $result = $stmt_show->get_result();
                         <td> <?php echo htmlspecialchars($fetch['user_id']); ?></td>
                         <td> <?php echo htmlspecialchars ($fetch['document_type']); ?></td>
                         <td>
-                            <a href="/TVAM_SCHOLARSHIP/admin/documents/download.php?token=<?php echo htmlspecialchars($fetch['download_token']); ?>" target="_blank" rel="noopener noreferrer">
+                            <a href="/TVAM_SCHOLARSHIP/shared/download.php?token=<?php echo htmlspecialchars($fetch['download_token']); ?>" target="_blank" rel="noopener noreferrer">
                                 <?php echo htmlspecialchars($fetch['file_name']); ?>
                             </a>
                         </td>
