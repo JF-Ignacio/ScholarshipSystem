@@ -5,11 +5,14 @@ require_once "../../config/database.php";
 
 $id = $_SESSION['id'] ?? 0;
 
+$page_shown = 5;
+
+$page_setup =  isset($_GET['page']) ? trim($_GET['page']) : 1;
+
+if($page_setup < 1) $page_setup = 1;
 
 $search = isset($_GET['user']) ? trim($_GET['user']) : '';
 $status = isset($_GET['status']) ? trim($_GET['status']) : '';
-
-$scholar_sql = "SELECT * FROM scholars";
 
 $conditions = [];
 $params = [];
@@ -32,23 +35,48 @@ if($status !== '') {
     $types .= "s";
 }
 
-if(!empty($conditions)) {
-    $scholar_sql .= " WHERE " . implode(" AND ", $conditions);
-}
+$where_clause = !empty($conditions) ? " WHERE ".implode(" AND ", $conditions) : "";
 
-$scholar_sql .= " ORDER BY created_at DESC";
+$count_scholar = "SELECT COUNT(*) AS total_scholars FROM scholars" . $where_clause;
+$count_stmt = $conn->prepare($count_scholar);
 
-$stmt = $conn->prepare($scholar_sql);
-
-if(!$stmt) die ("DATABASE FAILED. TRY CONTACTING ADMIN.");
+if(!$count_stmt) die ("DATABASE FAILED. CONTACT ADMIN");
 
 if(!empty($params)) {
-    $stmt->bind_param($types, ...$params);
+    $count_stmt->bind_param($types, ...$params);
 }
 
-$stmt->execute();
+$count_stmt->execute();
+$total_rows = $count_stmt->get_result()->fetch_assoc()['total_scholars'];
+$total_page = max(1, (int)ceil($total_rows / $page_shown));
+
+if($page_setup > $total_page) $page_setup = $total_page;
+
+$offset = ($page_setup - 1) * $page_shown;
+
+$scholar_sql = "SELECT * FROM scholars" . $where_clause . " ORDER BY created_at DESC LIMIT  ? OFFSET ?";
+
+$data_params = $params;
+$data_types = $types . "ii";
+$data_params[] = $page_shown;
+$data_params[] = $offset;
+
+$stmt = $conn->prepare($scholar_sql);
+if(!$stmt) die ("DATABASE FAILED. CONTACT ADMIN.");
+
+$stmt->bind_param($data_types, ...$data_params);
+
+if(!$stmt->execute()) die ("FAILED TO EXECUTE. CONTACT ADMIN");
+
 $result = $stmt->get_result();
 
+// HELPER
+
+function paginationLink($page_num) {
+    $query = $_GET;
+    $query['page'] = $page_num;
+    return 'index.php?' . http_build_query($query);
+}
 ?>
 
 
@@ -157,6 +185,35 @@ $result = $stmt->get_result();
                     <?php } ?>
                 </tbody>
             </table>
+        </div>
+
+        <div>
+            <?php if ($total_page > 1) : ?>
+            <nav aria-label="Page navigation" class="mt-3">
+                <ul class="pagination justify-content-center p-3 px-4 py-4">
+                    <li class="page-item <?php echo($page_setup <= 1) ? 'disabled' : ''; ?>">
+                        <a  class="page-link" href="<?php echo paginationLink($page_setup - 1); ?>">PREVIOUS</a>
+                    </li>
+                    
+                    <?php for($i = 1; $i <= $total_page; $i++): ?>
+                        <li class="page-item" href="<?php echo($i === $page_setup) ? 'active' : '' ;?>">
+                            <a href="page-link" href="<?php echo paginationLink($i); ?>"></a>
+                        </li>
+                    <?php endfor; ?>
+                    <li class="page-item <?php echo ($page_setup >= $total_page) ? 'disabled' : '';?>">
+                        <a href="<?php echo paginationLink($page_setup + 1);?>" class="page-link">NEXT</a>
+                    </li>
+                </ul>
+
+                <p class="text-center text-muted small">
+                    Showing Page <?php echo $page_setup; ?>
+                    of 
+                    <?php echo $total_page; ?>
+                    (<?php echo $total_rows; ?> total Scholars)
+                </p>
+            </nav>
+
+            <?php endif; ?>
         </div>
     </main>
 </div>
