@@ -98,9 +98,19 @@ function paginationLink($page_num) {
 
     <main class="container-fluid w-100 mt-4 p-4" style="min-height: 100vh;">
 
-        <div class="card border-0 rounded-1 shadow-sm p-3 px-4 py-4">
-            <div class=" text-start align-items-center">
-                <h3 class="text-uppercase fs-4">Scholar data</h3>
+        <div class="card p-2 px-4 py-4 border-0 rounded-1">
+            <div class="card-body p-1 d-flex flex-md-column flex-wrap flex-lg-column justify-content-center">
+                <div class="row align-items-center">
+
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <span class="fw-bold text-uppercase text-muted">Reports</span>
+                        <h3 class="text-uppercase fw-bold">SCHOLAR</h3>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-12">
+                        <p class="badge bg-warning"> TOTAL SCHOLARS: <?php echo $total_rows;?></p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -198,7 +208,7 @@ function paginationLink($page_num) {
                     <?php for($i = 1; $i <= $total_page; $i++): ?>
                         <li class="page-item" href="<?php echo($i === $page_setup) ? 'active' : '' ;?>">
                             <a class="page-link" href="<?php echo paginationLink($i); ?>">
-                                <span class="p-3 "><?php echo $i; ?></span>
+                                <span class="p-3 text-dark"><?php echo $i; ?></span>
                             </a>
                         </li>
                     <?php endfor; ?>
