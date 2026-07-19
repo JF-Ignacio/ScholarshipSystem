@@ -197,9 +197,12 @@ function paginationLink($page_num) {
                     
                     <?php for($i = 1; $i <= $total_page; $i++): ?>
                         <li class="page-item" href="<?php echo($i === $page_setup) ? 'active' : '' ;?>">
-                            <a href="page-link" href="<?php echo paginationLink($i); ?>"></a>
+                            <a class="page-link" href="<?php echo paginationLink($i); ?>">
+                                <span class="p-3 "><?php echo $i; ?></span>
+                            </a>
                         </li>
                     <?php endfor; ?>
+
                     <li class="page-item <?php echo ($page_setup >= $total_page) ? 'disabled' : '';?>">
                         <a href="<?php echo paginationLink($page_setup + 1);?>" class="page-link">NEXT</a>
                     </li>
