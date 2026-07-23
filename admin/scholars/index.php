@@ -7,7 +7,7 @@ $id = $_SESSION['id'] ?? 0;
 
 $page_shown = 5;
 
-$page_setup =  isset($_GET['page']) ? trim($_GET['page']) : 1;
+$page_setup =  isset($_GET['page']) ? intval($_GET['page']) : 1;
 
 if($page_setup < 1) $page_setup = 1;
 
@@ -71,7 +71,6 @@ if(!$stmt->execute()) die ("FAILED TO EXECUTE. CONTACT ADMIN");
 $result = $stmt->get_result();
 
 // HELPER
-
 function paginationLink($page_num) {
     $query = $_GET;
     $query['page'] = $page_num;
@@ -206,7 +205,7 @@ function paginationLink($page_num) {
                     </li>
                     
                     <?php for($i = 1; $i <= $total_page; $i++): ?>
-                        <li class="page-item" href="<?php echo($i === $page_setup) ? 'active' : '' ;?>">
+                        <li class="page-item" href="<?php echo($i === $page_setup) ? 'disabled' : 'active' ;?>">
                             <a class="page-link" href="<?php echo paginationLink($i); ?>">
                                 <span class="p-3 text-dark"><?php echo $i; ?></span>
                             </a>

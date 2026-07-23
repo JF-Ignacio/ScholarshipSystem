@@ -3,17 +3,12 @@
 require_once "../../config/database.php";
 require_once "../../config/admin-auth.php";
 
-
-
 $search = isset($_GET['applicant']) ? trim($_GET['applicant']) : '';
 $statusFilter = isset($_GET['sort']) ? trim($_GET['sort']) : '';
+$page_setup = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-$query_stmt = "SELECT a.application_ID, 
-                u.fullname,
-                a.scholarship_type,
-                a.status
-                FROM applications a
-                INNER JOIN users u ON a.user_id = u.id";
+if ($page_setup < 1) $page_setup = 1;
+$page_shown_scholars = 5;
 
 $conditions = [];
 $params = [];
@@ -27,34 +22,69 @@ if ($search !== '') {
     $params[] = $search_param;
 
     $types .= "ss";
-
 }
 
 if($statusFilter !== '') {
     $conditions[] = "a.status = ?";
     $params[] = $statusFilter;
-    $types .= "s";
+    $types .= "s";  
 }
 
-if(!empty($conditions)) {
-    $query_stmt .= " WHERE " . implode(" AND ", $conditions);
-}
+$whereClause = !empty($conditions) ? " WHERE " .implode(" AND ", $conditions) : '';
 
-$query_stmt .= " ORDER BY a.created_at DESC";
+// QUERY FOR SELECTING THE LIST APPLICANTS
+$count_sql = "SELECT COUNT(*) AS total_applications 
+                FROM applications a
+                INNER JOIN users u ON a.user_id = u.id"
+                . $whereClause;
+$count_stmt = $conn->prepare($count_sql);
 
-$stmt = $conn->prepare($query_stmt);
-
-if(!$stmt) die ("DATABASE FAILED. CONTACT ADMIN.");
+if (!$count_stmt) die ("FAILED TO CONNECT WITH THE DATABASE. CONTACT ADMIN");
 
 if(!empty($params)) {
-    $stmt->bind_param($types, ...$params);
+    $count_stmt->bind_param($types, ...$params);
 }
 
+$count_stmt->execute();
+$total_applicants = $count_stmt->get_result()->fetch_assoc()['total_applications'];
+$total_page = max(1, (int)ceil($total_applicants / $page_shown_scholars));
+
+if($page_setup > $total_page) {
+    $page_setup = $total_page;
+}
+
+$offset = ($page_setup - 1) * $page_shown_scholars;
+
+$select_query = "SELECT a.application_ID,
+                a.scholarship_type,
+                a.status,
+                u.fullname 
+                FROM applications a
+                INNER JOIN users u ON a.user_id = u.id"
+                . $whereClause .
+                " ORDER BY a.application_ID DESC
+                LIMIT ?
+                OFFSET ?";
+
+$data_params = $params;
+$data_types = $types . "ii";
+$data_params[] = $page_shown_scholars;
+$data_params[] = $offset;
+
+$stmt = $conn->prepare($select_query);
+
+if(!$stmt) die ("DATABASE FAILED. CONTACT ADMIN");
+
+$stmt->bind_param($data_types, ...$data_params);
 $stmt->execute();
+$selectResult = $stmt->get_result();
 
-$query_result = $stmt->get_result();
-
-
+function paginationLink($page_number) {
+    $query = $_GET;
+    $query['page'] = $page_number;
+    
+    return 'index.php?' . http_build_query($query);
+}
 ?>
 
 <!DOCTYPE html>
@@ -121,8 +151,8 @@ $query_result = $stmt->get_result();
 
                     <tbody>
                         <?php 
-                        if ($query_result->num_rows > 0) {
-                            while($row = $query_result->fetch_assoc()) {
+                        if ($selectResult->num_rows > 0) {
+                            while($row = $selectResult->fetch_assoc()) {
                                 $badgeClass = "bg-secondary";
                                 if(strtolower($row['status']) == 'active') $badgeClass = "bg-success";
                                 if(strtolower($row['status']) == 'pending') $badgeClass = "bg-warning text-dark";
@@ -153,6 +183,39 @@ $query_result = $stmt->get_result();
 
                     </tbody>
                 </table>
+            </div>
+
+            <div>
+                <?php if($total_page > 1) : ?>
+
+                <nav aria-label="Page pagination" class=" mt-3">
+                    <ul class="pagination justify-content-center p-3 px-4 py-4">
+                        <li class="page-item <?php echo($page_setup <= 1) ? 'disabled' : ''; ?>">
+                            <a class="page-link" href="<?php echo paginationLink($page_setup - 1); ?>">PREVIOUS</a>
+                        </li>
+
+                        <?php for($i = 1; $i <= $total_page; $i++) : ?>
+                            <li class="page-item <?php echo ($i === $page_setup) ? 'active' : ''; ?>">
+                                <a href="<?php echo paginationLink($i); ?>" class="page-link">
+                                    <?php echo $i; ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <li class="page-item <?php echo ($page_setup >= $total_page) ? 'disabled' : ''?>">
+                            <a href="<?php echo paginationLink($page_setup + 1); ?>" class="page-link">
+                                NEXT
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p class="text-muted text-center small">
+                        Showing Page <?php echo $page_setup; ?>
+                        of <?php echo $total_page; ?>
+                        (<?php echo $total_applicants;?> total Applicants)
+                    </p>
+                </nav>
+                <?php endif; ?>
             </div>
         </main>
     </div>
