@@ -2,7 +2,7 @@
 
 require_once "../../config/database.php";
 require_once "../../config/admin-auth.php";
-
+    
 $search = isset($_GET['applicant']) ? trim($_GET['applicant']) : '';
 $statusFilter = isset($_GET['sort']) ? trim($_GET['sort']) : '';
 $page_setup = isset($_GET['page']) ? intval($_GET['page']) : 1;

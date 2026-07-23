@@ -4,49 +4,66 @@ require_once "../../config/admin-auth.php";
 
 $search = isset($_GET['user']) ? trim($_GET['user']) : "";
 $roleSearch = isset($_GET['role']) ? trim($_GET['role']) : "";
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
+if($page < 1) $page = 1;
+$page_shown_users = 5;
 
-$sql_display = "SELECT id, fullname, email, role, created_at 
-                FROM users";
-
-$conditions = [];
+$conditions = [];    
 $params = [];
 $types = "";
 
 if($search !== '') {
     $conditions[] = "(fullname LIKE ? OR email LIKE ? OR role LIKE ?)";
     $search_param = "%" . $search . "%";
-
     $params[] = $search_param;
     $params[] = $search_param;
     $params[] = $search_param;
     $types .= "sss";
 }
-
-
 if($roleSearch !== '') {
     $conditions[] = "role=?";
     $params[] = $roleSearch;
     $types .= "s";
-
 }
 
-if(!empty($conditions)) {
-    $sql_display .= " WHERE " .implode(" AND ", $conditions);
-}
+$where_clause = !empty($conditions) ? " WHERE " .implode(" AND ", $conditions) : '';
 
-$sql_display .= " ORDER BY created_at DESC";
+$count_query = "SELECT COUNT(*) AS total_users 
+                FROM users ". $where_clause;
+$stmt_count = $conn->prepare($count_query);
 
-$stmt = $conn->prepare($sql_display);
-
-if (!$stmt) die ("DATABASE FAILED. Try contacting admin.");
+if(!$stmt_count) die ("DATABASE CONNECTION FAILED. TRY CONTACTING ADMIN");
 
 if(!empty($params)) {
-    $stmt->bind_param($types, ...$params);
+    $stmt_count->bind_param($types, ...$params);
+}
+if(!$stmt_count->execute()) die ("FAILED TO EXECUTE DATABASE. CONTACT ADMIN");
+$total_users = $stmt_count->get_result()->fetch_assoc()['total_users'];
+$total_page = max(1, (int)ceil($total_users / $page_shown_users));
+
+if($page > $total_page) {
+    $page = $total_page;
 }
 
-$stmt->execute();
-$result = $stmt->get_result();
+$offset = ($page - 1) * $page_shown_users;
+
+$select_query = "SELECT * FROM users" . $where_clause .
+                " ORDER BY created_at DESC 
+                LIMIT ?
+                OFFSET ?";
+$stmt_select = $conn->prepare($select_query);
+
+$data_params = $params;
+$data_types = $types . "ii";
+$data_params[] = $page_shown_users;
+$data_params[] = $offset;
+
+if(!$stmt_select) die ("DATABASE FAILED. CONTACT ADMIN");
+
+$stmt_select->bind_param($data_types, ...$data_params);
+$stmt_select->execute();
+$result = $stmt_select->get_result();
 
 $users = [];
 $adminCount = 0;
@@ -67,6 +84,14 @@ while ($row = $result->fetch_assoc()) {
 }
 
 $totalUsers = count($users);
+
+
+function paginationLink($pageNumber) {
+    $query = $_GET;
+    $query['page'] = $pageNumber;
+
+    return 'index-user.php?' . http_build_query($query);
+}
 ?>
 
 <!DOCTYPE html>
@@ -186,6 +211,35 @@ $totalUsers = count($users);
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div>
+                <?php if($result->num_rows > 0) :?>
+                <nav aria-label="Page pagination" class="mt-4">
+                    <ul class="pagination justify-content-center p-3">
+                        <li class="page-item <?php echo ($page <= 1) ? 'disabled' : '';?>">
+                            <a href="<?php echo paginationLink($page - 1);?>" class="page-link">
+                                PREVIOUS
+                            </a>
+                        </li>
+
+                        <?php for($i = 1; $i <= $total_page; $i++) :?>
+                        <li class="page-item <?php echo($i === $page) ? 'active' : '';?>">
+                            <a href="<?php echo paginationLink($i); ?>" class="page-link">
+                                <?php echo $i; ?>
+                            </a>
+                        </li>
+                        <?php endfor; ?>
+
+                        <li class="page-item <?php echo($page >= $total_page) ? 'disabled' : ''; ?>">
+                            <a href="<?php echo paginationLink($page + 1); ?>" class="page-link">
+                                NEXT
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <?php endif; ?>
             </div>
         </main>
 
