@@ -6,33 +6,79 @@ require_once "../../config/admin-auth.php";
 $id = $_SESSION['id'] ?? 0;
 
 $searchUser = isset($_GET['findUser']) ? trim($_GET['findUser']) : '';
+$page_setup = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
+if($page_setup < 1) $page_setup = 1;
+
+$page_shown_files = 5;
+
+$conditions = [];
+$params = [];
+$types = "";
+
+if($searchUser !== '') {
+    $conditions[] = ("s.fullname LIKE ? OR s.student_id LIKE ? OR d.document_type LIKE ?");
+    $search_params = "%" . $searchUser . "%";
+
+    $params[] = $search_params;
+    $params[] = $search_params;
+    $params[] = $search_params;
+
+    $types .= "sss";
+}
+
+$where_clasue = !empty($conditions) ?" WHERE " .implode(" AND ", $conditions) : '';
+
+$count_query = "SELECT COUNT(*) AS total_documents 
+                FROM documents" . $where_clasue;
+$count_stmt = $conn->prepare($count_query);
+
+if(!$count_stmt) die ("DATABASE FAILED. CONTACT ADMIN");
+
+if(!empty($params)) {
+    $count_stmt->bind_param($types, ...$params);
+}
+
+$count_stmt->execute();
+$total_documents = $count_stmt->get_result()->fetch_assoc()['total_documents'];
+$total_page = max(1, (int)ceil($total_documents / $page_shown_files));
+
+if($page_setup > $total_page) {
+    $page_setup = $total_page;
+}
+
+$offset = ($page_setup - 1) * $page_shown_files;
+
+$data_params = $params;
+$data_types = $types . "ii";
+$data_params[] = $page_shown_files;
+$data_params[] = $offset;
 
 $docu_sql = "SELECT d.document_type, d.file_name, d.status, d.id, d.user_id, d.download_token,
             s.fullname,
             s.course,
             s.status AS scholar_status
             FROM documents d
-            INNER JOIN scholars s ON d.user_id = CAST(REPLACE(s.student_id, 'TVAM-', '') AS UNSIGNED)";
-
-if ($searchUser !== '') {
-    $docu_sql .= " WHERE s.fullname LIKE ? OR s.student_id LIKE ? OR d.document_type LIKE ?";
-}
-
-$docu_sql .= " ORDER BY d.created_at DESC";
+            INNER JOIN scholars s ON d.user_id = CAST(REPLACE(s.student_id, 'TVAM-', '') AS UNSIGNED)"
+            . $where_clasue .
+            "LIMIT ?
+            OFFSET ?"; 
 
 $stmt = $conn->prepare($docu_sql);
 
-if (!$stmt) die ("FAILED TO LOAD ENGINE. CONTACT ADMIN");
+if(!$stmt) die ("DATABASE FAILED. CONTACT ADMIN");
 
-if ($searchUser !== '') {
-    $search_param = "%" . $searchUser . "%";
-    $stmt->bind_param("sss", $search_param, $search_param, $search_param);
-}
-
+$stmt->bind_param($data_types, ...$data_params);
 $stmt->execute();
 $results = $stmt->get_result();
 $total_files = $results->num_rows;
+
+function paginationLink($pageNumber) {
+    $query = $_GET;
+    $query['page'] = $pageNumber;
+
+    return 'index.php?' . http_build_query($query);
+}
 
 
 
@@ -136,6 +182,41 @@ $total_files = $results->num_rows;
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <?php if($results->num_rows > 0) : ?>
+                <nav aria-label="page pagination">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <?php echo ($page_setup <= 1) ? 'disabled' : '';?>">
+                            <a href="<?php echo paginationLink($page_setup - 1); ?>" class="page-link">
+                                PREVIOUS
+                            </a>
+                        </li>
+
+                        <?php for($i = 1; $i <= $total_page; $i++) :?>
+                            <li class="page-item <?php echo ($i === $page_setup) ? 'active' : '' ?>">
+                                <a href="<?php echo paginationLink($i); ?>" class="page-link">
+                                    <?php echo $i; ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <li class="page-item <?php echo ($page_setup >= $total_page) ? 'disabled' : '' ?>">
+                            <a href="<?php echo paginationLink($page_setup + 1); ?>" class="page-link">
+                                NEXT
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p class="text-muted text-center small">
+                        Showing Page <?php echo $page_setup; ?>
+                        of 
+                        <?php echo $total_page; ?>
+                        (<?php echo $total_documents ?> TOTAL DOCUMENTS)
+                    </p>
+                </nav>
+                <?php endif; ?>
             </div>
         </main>
     </div>

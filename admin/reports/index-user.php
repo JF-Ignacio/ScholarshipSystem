@@ -237,6 +237,13 @@ function paginationLink($pageNumber) {
                             </a>
                         </li>
                     </ul>
+
+                    <p class="text-muted text-center small">
+                        Showing Page <?php echo $page; ?>
+                        of 
+                        <?php echo $total_page; ?>
+                        (<?php echo $total_users?> TOTAL USERS)
+                    </p>
                 </nav>
 
                 <?php endif; ?>
