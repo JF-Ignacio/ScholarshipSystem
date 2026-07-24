@@ -1,4 +1,5 @@
 <?php 
+
 include "../../config/database.php";
 include "../../config/admin-auth.php";
 
@@ -8,22 +9,54 @@ $sort = isset($_GET['sort']) ? trim($_GET['sort']) : 'newest';
 $nextSort = "";
 $signSort = "";
 
-$logs_sql = "SELECT l.id, l.actions, l.created_at, u.fullname, u.email, a.status, a.scholarship_type
-            FROM activity_logs l
-            INNER JOIN users u ON l.user_id = u.id
-            LEFT JOIN applications a ON l.user_id = a.user_id";
+$page_setup = isset($_GET['page']) ? intval($_GET['page']) : 1;
 
-if($sort === 'oldest') {
-    $logs_sql .= " ORDER BY l.created_at ASC";
-    $nextSort = 'newest';
-} else {
-    $logs_sql .= " ORDER BY l.created_at DESC";
-    $nextSort = 'oldest';
+$page_shown_logs = 5; 
+
+if ($page_setup < 1) $page_setup = 1;
+
+$count_query = "SELECT COUNT(*) AS total_logs FROM activity_logs";
+$count_stmt = $conn->prepare($count_query);
+
+if(!$count_stmt) die ("database failed. Contact admin");
+if(!$count_stmt->execute()) die ("DATABASE FAILED. CONTACT ADMIN.");
+
+$total_activity = $count_stmt->get_result()->fetch_assoc()['total_logs'];
+$total_page = max(1, (int)ceil($total_activity/ $page_shown_logs));
+
+if ($page_setup > $total_page) {
+    $page_setup = $total_page;
 }
 
-$results = $conn->query($logs_sql);
+$offset = ($page_setup - 1) * $page_shown_logs;
 
+if($sort === 'newest') {
+    $signSort .= " ORDER BY created_at DESC";
+    $nextSort = "oldest";
+}
+else {
+    $signSort = " ORDER BY created_at ASC";
+    $nextSort = "newest";
+}
 
+$select_query = "SELECT * FROM activity_logs"
+                . $signSort . 
+                " LIMIT ? OFFSET ?";
+$select_stmt = $conn->prepare($select_query);
+
+if(!$select_stmt) die ("DATABASE FAILED. TRY CONTACTING ADMIN");
+
+$select_stmt->bind_param("ii", $page_shown_logs, $offset);
+
+if(!$select_stmt->execute()) die ("DATABASE FAILED. CONTACT ADMIN");
+
+$results = $select_stmt->get_result();
+
+function paginationLink($pageNumber) {
+    $query = $_GET;
+    $query['page'] = $pageNumber;
+    return 'logs.php?' . http_build_query($query);
+}
 ?>
 
 <!DOCTYPE html>
@@ -98,6 +131,36 @@ $results = $conn->query($logs_sql);
                     </tbody>
                     </table>
                 </div>
+            </div>
+
+            <div class="mt-4">
+                <?php if($results->num_rows > 0) :?>
+                <nav aria-label="Page pagination justify-content-center">
+                    <ul class="pagination justify-content-center">
+
+                        <li class="page-item <?php echo($page_setup <= 1) ? 'disabled' : ''; ?>">
+                            <a href="<?php echo paginationLink($page_setup - 1)?>" class="page-link">
+                                PREVIOUS
+                            </a>
+                        </li>
+
+                        <?php for ($i = 1; $i <= $total_page; $i++) :?>
+                            <li class="page-item <?php echo ($i === $page_setup) ? 'active' : ''?>">
+                                <a href="<?php echo paginationLink($i)?>" class="page-link">
+                                    <?php echo $i; ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <li class="page-item <?php echo($page_setup >= $total_page) ? 'disabled' : '' ?>">
+                            <a href="<?php echo paginationLink($page_setup + 1)?>" class="page-link">
+                                NEXT
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <?php endif; ?>
             </div>
         </main>
     </div>
