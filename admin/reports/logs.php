@@ -95,9 +95,16 @@ function paginationLink($pageNumber) {
                 </div>
             </div>
 
-            <div class="card d-flex shadow-sm rounded-3 border-0 overflow-hidden">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
+            <div class="table-responsive bg-white border rounded shadow-sm p-3">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-1">Activity Directory</h5>
+                        <p class="text-muted mb-0 small">Admin activity logs sorted by creation date.</p>
+                    </div>
+                </div>
+
+                <div class="admin-table-scroll">
+                    <table class="table table-hover align-middle mb-0 admin-responsive-table">
                         <thead class="text-center table-dark">
                             <tr class="fs-5 align-items-center text-center">
                                 <th class="p-3 p-sm-4">ID</th>
@@ -118,9 +125,9 @@ function paginationLink($pageNumber) {
                                     else { $bg = "primary"; }
                             ?>
                             <tr>
-                                <td class="text-mutedtext-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['id']); ?></td>
-                                <td class="text-center justify-content-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['actions']); ?></td>
-                                <td class=" text-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['created_at']);?></td>
+                                <td data-label="ID" class="text-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['id']); ?></td>
+                                <td data-label="ACTIONS" class="text-center justify-content-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['actions']); ?></td>
+                                <td data-label="CREATED AT" class="text-center bg-<?php echo $bg; ?>"><?php echo htmlspecialchars($row['created_at']);?></td>
                             </tr>
                             <?php } ?>
                         <?php } else {?>

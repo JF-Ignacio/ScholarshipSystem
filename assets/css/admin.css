@@ -62,6 +62,14 @@
     white-space: nowrap;
 }
 
+.admin-responsive-table thead.table-dark th {
+    color: #ffffff;
+}
+
+.admin-page .table-dark th {
+    color: #ffffff !important;
+}
+
 .admin-responsive-table tbody td {
     vertical-align: middle;
 }
@@ -137,7 +145,12 @@
 /* Improve table responsiveness for admin pages */
 .admin-page .table-responsive {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    -webkit--overflow-scrolling: touch;
+}
+
+.admin-page .admin-table-scroll {
+    overflow-x: auto;
+    -webkit--overflow-scrolling: touch;
 }
 
 .admin-page .table-responsive table {
@@ -197,7 +210,7 @@
     }
 
     .admin-page .table-responsive td::before {
-        color: #6c757d;
+        color: #f3f6fa;
         content: attr(data-label);
         flex: 0 0 42%;
         font-weight: 700;

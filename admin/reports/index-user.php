@@ -151,7 +151,7 @@ function paginationLink($pageNumber) {
                 </form>
             </div>
 
-            <div class="bg-white border rounded shadow-sm p-3 mt-3">
+            <div class="table-responsive bg-white border rounded shadow-sm p-3 mt-3">
                 <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-3">
                     <div>
                         <h5 class="fw-bold mb-1">Account Directory</h5>
@@ -159,15 +159,15 @@ function paginationLink($pageNumber) {
                     </div>
                 </div>
 
-                <div class="table-responsive">
+                <div class="admin-table-scroll">
                     <table class="table table-hover align-middle mb-0 admin-responsive-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Account Created</th>
+                        <thead class="text-center table-dark">
+                        <tr class="align-items-center text-center">
+                            <th class="p-3 p-sm-4">ID</th>
+                            <th class="p-3 p-sm-4">Full Name</th>
+                            <th class="p-3 p-sm-4">Email</th>
+                            <th class="p-3 p-sm-4">Role</th>
+                            <th class="p-3 p-sm-4">Account Created</th>
                         </tr>
                         </thead>
                     
@@ -188,19 +188,19 @@ function paginationLink($pageNumber) {
                                     $createdAt = !empty($row['created_at']) ? date("M d, Y h:i A", strtotime($row['created_at'])) : "N/A";
                             ?>
                             <tr>
-                                <td data-label="ID" class="fw-bold"><?php echo htmlspecialchars($row['id']); ?></td>
-                                <td data-label="Full Name"><?php echo htmlspecialchars($row['fullname']); ?></td>
-                                <td data-label="Email">
+                                <td data-label="ID" class="fw-bold text-center"><?php echo htmlspecialchars($row['id']); ?></td>
+                                <td data-label="Full Name" class="text-center"><?php echo htmlspecialchars($row['fullname']); ?></td>
+                                <td data-label="Email" class="text-center">
                                     <a class="text-decoration-none" href="mailto:<?php echo htmlspecialchars($row['email']); ?>">
                                         <?php echo htmlspecialchars($row['email']); ?>
                                     </a>
                                 </td>
-                                <td data-label="Role">
+                                <td data-label="Role" class="text-center">
                                     <span class="badge <?php echo $badgeClass; ?> text-uppercase px-3 py-2">
                                         <?php echo htmlspecialchars($row['role']); ?>
                                     </span>
                                 </td>
-                                <td data-label="Account Created"><?php echo htmlspecialchars($createdAt); ?></td>
+                                <td data-label="Account Created" class="text-center"><?php echo htmlspecialchars($createdAt); ?></td>
                             </tr>
                             <?php }
                             } else { ?>

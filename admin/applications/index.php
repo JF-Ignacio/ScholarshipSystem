@@ -138,14 +138,22 @@ function paginationLink($page_number) {
             </div>
 
             <div class="table-responsive bg-white border rounded shadow-sm p-3">
-                <table class="table table-hover align-middle mb-0 table-responsive">
-                    <thead>
-                        <tr>
-                            <th>APPLICANT ID</th>
-                            <th>NAME</th>
-                            <th>SCHOLARSHIP</th>
-                            <th>STATUS</th>
-                            <th>ACTION</th>
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-1">Application Directory</h5>
+                        <p class="text-muted mb-0 small">Scholarship applications sorted by application date.</p>
+                    </div>
+                </div>
+
+                <div class="admin-table-scroll">
+                    <table class="table table-hover align-middle mb-0 admin-responsive-table">
+                    <thead class="text-center table-dark text-light">
+                        <tr class="align-items-center text-center">
+                            <th class="p-3 p-sm-4">APPLICANT ID</th>
+                            <th class="p-3 p-sm-4">NAME</th>
+                            <th class="p-3 p-sm-4">SCHOLARSHIP</th>
+                            <th class="p-3 p-sm-4">STATUS</th>
+                            <th class="p-3 p-sm-4">ACTION</th>
                         </tr>
                     </thead>
 
@@ -159,15 +167,15 @@ function paginationLink($page_number) {
                                 if(strtolower($row['status']) == 'inactive') $badgeClass = "bg-danger";
                         ?>
                         <tr>
-                            <td class="fw-bold"><?php echo htmlspecialchars($row['application_ID']); ?></td>
-                            <td> <?php echo htmlspecialchars($row['fullname']);?></td>
-                            <td> <?php echo htmlspecialchars(str_replace('_', '', $row['scholarship_type'])); ?></td>
-                            <td> 
+                            <td data-label="APPLICANT ID" class="fw-bold text-center"><?php echo htmlspecialchars($row['application_ID']); ?></td>
+                            <td data-label="NAME" class="text-center"> <?php echo htmlspecialchars($row['fullname']);?></td>
+                            <td data-label="SCHOLARSHIP" class="text-center"> <?php echo htmlspecialchars(str_replace('_', '', $row['scholarship_type'])); ?></td>
+                            <td data-label="STATUS" class="text-center"> 
                                 <span class="badge <?php echo $badgeClass;?> text-uppercase px-3 py-2">
                                     <?php echo htmlspecialchars($row['status']);?>
                                 </span>
                             </td>
-                            <td class="d-flex flex-column gap-2">
+                            <td data-label="ACTION" class="d-flex flex-column gap-2">
                                 <a href="approved.php?id=<?php echo $row['application_ID'];?>" class="index-btn btn btn-primary fw-bold ">Approved</a>
                                 <a href="rejected.php?id=<?php echo $row['application_ID'];?>" class="index-btn btn btn-danger fw-bold">Rejected</a>
                             </td>
@@ -183,6 +191,7 @@ function paginationLink($page_number) {
 
                     </tbody>
                 </table>
+                </div>
             </div>
 
             <div>

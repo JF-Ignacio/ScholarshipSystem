@@ -80,19 +80,26 @@ $total_files = $results->num_rows;
                 </form>
             </div>
 
-            <div class="card border-0 rounded-1 shadow-sm">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0 text-center">
-                        <thead>
-                            <tr>
-                                <th>USER_ID</th>
-                                <th>FULLNAME</th>
-                                <th>DOCUMENT TYPE</th>
-                                <th>FILE NAME</th>
-                                <th>COURSE</th>
-                                <th>SCHOLAR STATUS</th>
-                                <th>FILE STATUS</th>
-                                <th>ACTION</th>
+            <div class="table-responsive bg-white border rounded shadow-sm p-3">
+                <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-3">
+                    <div>
+                        <h5 class="fw-bold mb-1">Document Directory</h5>
+                        <p class="text-muted mb-0 small">Submitted scholar documents sorted by upload date.</p>
+                    </div>
+                </div>
+
+                <div class="admin-table-scroll">
+                    <table class="table table-hover align-middle mb-0 admin-responsive-table">
+                        <thead class="text-center table-dark">
+                            <tr class="align-items-center text-center">
+                                <th class="p-3 p-sm-4">USER_ID</th>
+                                <th class="p-3 p-sm-4">FULLNAME</th>
+                                <th class="p-3 p-sm-4">DOCUMENT TYPE</th>
+                                <th class="p-3 p-sm-4">FILE NAME</th>
+                                <th class="p-3 p-sm-4">COURSE</th>
+                                <th class="p-3 p-sm-4">SCHOLAR STATUS</th>
+                                <th class="p-3 p-sm-4">FILE STATUS</th>
+                                <th class="p-3 p-sm-4">ACTION</th>
                             </tr>
                         </thead>
 
@@ -105,18 +112,18 @@ $total_files = $results->num_rows;
                                 ?>
 
                                 <tr>
-                                    <td data-label="USER_ID"><?php echo htmlspecialchars($doc['user_id']); ?></td>
-                                    <td data-label="FULLNAME"><?php echo htmlspecialchars($doc['fullname']); ?></td>
-                                    <td data-label="DOCUMENT TYPE"><?php echo htmlspecialchars($doc['document_type']); ?></td>
-                                    <td data-label="FILE NAME">
+                                    <td data-label="USER_ID" class="text-center"><?php echo htmlspecialchars($doc['user_id']); ?></td>
+                                    <td data-label="FULLNAME" class="text-center"><?php echo htmlspecialchars($doc['fullname']); ?></td>
+                                    <td data-label="DOCUMENT TYPE" class="text-center"><?php echo htmlspecialchars($doc['document_type']); ?></td>
+                                    <td data-label="FILE NAME" class="text-center">
                                         <a href="/TVAM_SCHOLARSHIP/shared/download.php?token=<?php echo htmlspecialchars($doc['download_token']); ?>" target="_blank" class="btn btn-sm btn-link">
                                             <i class="bi bi-file-earmark-text me-1"></i>
                                             <?php echo htmlspecialchars($doc['file_name']); ?>
                                         </a>
                                     </td>
-                                    <td data-label="COURSE"><?php echo htmlspecialchars($doc['course']); ?></td>
-                                    <td data-label="SCHOLAR STATUS"><?php echo htmlspecialchars($scholar_status); ?></td>
-                                    <td data-label="FILE STATUS"><span class="badge bg-<?php echo $badge; ?>"><?php echo htmlspecialchars($status); ?></span></td>
+                                    <td data-label="COURSE" class="text-center"><?php echo htmlspecialchars($doc['course']); ?></td>
+                                    <td data-label="SCHOLAR STATUS" class="text-center"><?php echo htmlspecialchars($scholar_status); ?></td>
+                                    <td data-label="FILE STATUS" class="text-center"><span class="badge bg-<?php echo $badge; ?>"><?php echo htmlspecialchars($status); ?></span></td>
                                     <td data-label="ACTION" class="action-cell">
                                         <div class="document-actions">
                                             <a href="verify.php?id=<?php echo $doc['id'];?>" class="btn btn-success btn-sm fw-bold document-action-btn">APPROVED</a>

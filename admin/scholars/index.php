@@ -143,18 +143,26 @@ function paginationLink($page_num) {
                 </div>
             </form>
         </div>
-        <div class="container-fluid mt-3 table-responsive p-2">
-            <table class="table table-hover shadow-sm">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>STUDENT_UID</th>
-                        <th>Fullname</th>
-                        <th>Course</th>
-                        <th>Year</th>
-                        <th>Scholarship</th>
-                        <th>Status</th>
-                        <th>Action Buttons</th>
+        <div class="table-responsive bg-white border rounded shadow-sm p-3 mt-3">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-3">
+                <div>
+                    <h5 class="fw-bold mb-1">Scholar Directory</h5>
+                    <p class="text-muted mb-0 small">Registered scholars sorted by creation date.</p>
+                </div>
+            </div>
+
+            <div class="admin-table-scroll">
+                <table class="table table-hover align-middle mb-0 admin-responsive-table">
+                <thead class="text-center table-dark">
+                    <tr class="align-items-center text-center">
+                        <th class="p-3 p-sm-4">ID</th>
+                        <th class="p-3 p-sm-4">STUDENT_UID</th>
+                        <th class="p-3 p-sm-4">Fullname</th>
+                        <th class="p-3 p-sm-4">Course</th>
+                        <th class="p-3 p-sm-4">Year</th>
+                        <th class="p-3 p-sm-4">Scholarship</th>
+                        <th class="p-3 p-sm-4">Status</th>
+                        <th class="p-3 p-sm-4">Action Buttons</th>
                     </tr>
                 </thead>
 
@@ -169,18 +177,18 @@ function paginationLink($page_num) {
                             
                         ?>
                     <tr>
-                        <td> <?php echo $row['id'] ?></td>
-                        <td> <?php echo htmlspecialchars($row['student_id']); ?></td>
-                        <td> <?php echo htmlspecialchars($row['fullname']); ?></td>
-                        <td> <?php echo htmlspecialchars($row['course']); ?></td>
-                        <td> <?php echo htmlspecialchars($row['year_level']); ?></td>
-                        <td> <?php echo htmlspecialchars($row['scholarship_type']); ?></td>
-                        <td>
+                        <td data-label="ID" class="text-center"> <?php echo $row['id'] ?></td>
+                        <td data-label="STUDENT_UID" class="text-center"> <?php echo htmlspecialchars($row['student_id']); ?></td>
+                        <td data-label="Fullname" class="text-center"> <?php echo htmlspecialchars($row['fullname']); ?></td>
+                        <td data-label="Course" class="text-center"> <?php echo htmlspecialchars($row['course']); ?></td>
+                        <td data-label="Year" class="text-center"> <?php echo htmlspecialchars($row['year_level']); ?></td>
+                        <td data-label="Scholarship" class="text-center"> <?php echo htmlspecialchars($row['scholarship_type']); ?></td>
+                        <td data-label="Status" class="text-center">
                             <span class="badge <?php echo $bg; ?> text-uppercase fw-bold px-2 py-2 small">
                                 <?php echo htmlspecialchars($row['status']);?>
                             </span>
                         </td>
-                        <td class=""> 
+                        <td data-label="Action Buttons" class="text-center"> 
                             <a href="edit.php?id=<?php echo $row['id']; ?>" class="badge bg-primary text-decoration-none"> EDIT </a> 
                             <a href="delete.php?id=<?php echo $row['id']; ?>" class="badge bg-danger text-decoration-none"> DELETE </a>
                             <a href="view.php?id=<?php echo $row['id']; ?>" class="badge bg-success text-decoration-none">VIEW</a>
@@ -194,6 +202,7 @@ function paginationLink($page_num) {
                     <?php } ?>
                 </tbody>
             </table>
+            </div>
         </div>
 
         <div>
@@ -201,13 +210,15 @@ function paginationLink($page_num) {
             <nav aria-label="Page navigation" class="mt-3">
                 <ul class="pagination justify-content-center p-3 px-4 py-4">
                     <li class="page-item <?php echo($page_setup <= 1) ? 'disabled' : ''; ?>">
-                        <a  class="page-link" href="<?php echo paginationLink($page_setup - 1); ?>">PREVIOUS</a>
+                        <a  class="page-link" href="<?php echo paginationLink($page_setup - 1); ?>">
+                            PREVIOUS
+                        </a>
                     </li>
                     
                     <?php for($i = 1; $i <= $total_page; $i++): ?>
-                        <li class="page-item" href="<?php echo($i === $page_setup) ? 'disabled' : 'active' ;?>">
+                        <li class="page-item <?php echo($i === $page_setup) ? 'active' : ''; ?>">
                             <a class="page-link" href="<?php echo paginationLink($i); ?>">
-                                <span class="p-3 text-dark"><?php echo $i; ?></span>
+                                <?php echo $i; ?>
                             </a>
                         </li>
                     <?php endfor; ?>
