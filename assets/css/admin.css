@@ -185,6 +185,7 @@
 @media (max-width: 575.98px) {
     .admin-page .table-responsive thead {
         display: none;
+        color: black;
     }
 
     .admin-page .table-responsive,
@@ -210,7 +211,7 @@
     }
 
     .admin-page .table-responsive td::before {
-        color: #f3f6fa;
+        color: #020202;
         content: attr(data-label);
         flex: 0 0 42%;
         font-weight: 700;

@@ -872,3 +872,370 @@
 .student-upload.card-body {
     background: linear-gradient(45deg, rgb(10, 10, 112), white, rgb(10, 10, 112)) !important;
 }
+
+:root {
+    --paper: #F6F3EC;
+    --paper-raised: #FFFFFF;
+    --ink: #1F2430;
+    --ink-soft: #5B6472;
+    --navy: #142238;
+    --navy-deep: #0C1A2E;
+    --slate: #33507A;
+    --slate-soft: #E8EDF4;
+    --gold: #B8902F;
+    --gold-soft: #F1E4C2;
+    --line: rgba(20, 34, 56, 0.12);
+    --success: #2F6846;
+    --success-soft: #E4EEE7;
+    --pending: #8A6D1D;
+    --pending-soft: #F5EDD9;
+    --danger: #8C3B34;
+    --danger-soft: #F3E4E2;
+}
+
+* { box-sizing: border-box; }
+
+body.student-upload {
+    background:
+        radial-gradient(ellipse at top left, rgba(51,80,122,0.06), transparent 55%),
+        var(--paper);
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    min-height: 100vh;
+}
+
+.upload-shell {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+}
+
+.shell-heading {
+    margin-bottom: 2rem;
+}
+
+.shell-heading .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+}
+
+.shell-heading h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 2.1rem;
+    color: var(--navy);
+    margin: 0.25rem 0 0.35rem;
+}
+
+.shell-heading p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 0;
+    max-width: 560px;
+}
+
+.portal-grid {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+}
+
+@media (max-width: 940px) {
+    .portal-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- LEFT: intake card ---------- */
+.intake-card {
+    background: linear-gradient(165deg, var(--navy) 0%, var(--navy-deep) 100%);
+    border-radius: 4px;
+    padding: 2rem 1.9rem;
+    position: sticky;
+    top: 1.5rem;
+    box-shadow: 0 18px 40px -20px rgba(12, 26, 46, 0.5);
+}
+
+.intake-card .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    opacity: 0.85;
+}
+
+.intake-card h2 {
+    font-family: 'Source Serif 4', serif;
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 0.3rem 0 0.25rem;
+    font-weight: 600;
+}
+
+.intake-card .sub {
+    color: rgba(255,255,255,0.62);
+    font-size: 0.85rem;
+    margin-bottom: 1.6rem;
+    line-height: 1.5;
+}
+
+.alert-banner {
+    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+    border-left: 3px solid transparent;
+}
+
+.alert-banner.success {
+    background: rgba(47, 104, 70, 0.18);
+    border-color: #6FBF8E;
+    color: #CFE9DA;
+}
+
+.alert-banner.danger {
+    background: rgba(140, 59, 52, 0.2);
+    border-color: #E0897F;
+    color: #F4D6D2;
+}
+
+.field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+.field-group { margin-bottom: 1.3rem; }
+
+.intake-select, .intake-file {
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.92rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.intake-select option { color: #1F2430; }
+
+.intake-select:focus, .intake-file:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+    background: rgba(255,255,255,0.09);
+}
+
+.intake-file::file-selector-button {
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    border-radius: 2px;
+    padding: 0.4rem 0.7rem;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-right: 0.7rem;
+    cursor: pointer;
+}
+
+.hint-text {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.76rem;
+    margin-top: 0.4rem;
+    font-style: italic;
+}
+
+.submit-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    border-radius: 3px;
+    padding: 0.75rem;
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    margin-top: 0.4rem;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.submit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -8px rgba(184, 144, 47, 0.55);
+}
+
+.privacy-note {
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+    border-top: 1px dashed rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.45);
+    font-size: 0.75rem;
+    line-height: 1.5;
+}
+
+/* ---------- RIGHT: ledger panel ---------- */
+.ledger-panel {
+    background: var(--paper-raised);
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+
+.ledger-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 1.4rem 1.6rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ledger-header h2 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.25rem;
+    color: var(--navy);
+    margin: 0;
+    font-weight: 600;
+}
+
+.ledger-count {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+}
+
+.ledger-count strong { color: var(--navy); }
+
+.ledger-table-wrap { overflow-x: auto; }
+
+table.ledger-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+}
+
+table.ledger-table thead th {
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    font-weight: 500;
+    padding: 0.7rem 1rem;
+    background: var(--slate-soft);
+    white-space: nowrap;
+}
+
+table.ledger-table tbody tr {
+    border-bottom: 1px solid var(--line);
+    transition: background 0.1s ease;
+}
+
+table.ledger-table tbody tr:hover {
+    background: rgba(51, 80, 122, 0.04);
+}
+
+table.ledger-table td {
+    padding: 0.85rem 1rem;
+    vertical-align: middle;
+    color: var(--ink);
+}
+
+.doc-type-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.doc-tab {
+    width: 5px;
+    align-self: stretch;
+    border-radius: 2px;
+    min-height: 1.4rem;
+}
+
+.tab-coe { background: var(--slate); }
+.tab-gt  { background: var(--gold); }
+.tab-dor { background: var(--success); }
+
+.doc-type-label {
+    font-weight: 500;
+}
+
+.doc-type-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    display: block;
+}
+
+.file-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--slate);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.82rem;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+}
+
+.file-link:hover {
+    color: var(--navy);
+    border-bottom-color: var(--navy);
+}
+
+.stamp {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.28rem 0.6rem;
+    border-radius: 3px;
+    border: 1.5px dotted currentColor;
+    transform: rotate(-3deg);
+}
+
+.stamp.stamp-success { color: var(--success); background: var(--success-soft); }
+.stamp.stamp-pending { color: var(--pending); background: var(--pending-soft); }
+.stamp.stamp-danger  { color: var(--danger); background: var(--danger-soft); }
+
+.created-cell {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+}
+
+.ledger-empty {
+    padding: 3.5rem 1.6rem;
+    text-align: center;
+    color: var(--ink-soft);
+}
+
+.ledger-empty .icon-mark {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2rem;
+    color: var(--slate);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.ledger-empty p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .submit-btn { transition: none; }
+}
