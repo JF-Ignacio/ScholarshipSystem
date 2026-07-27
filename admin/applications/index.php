@@ -33,7 +33,10 @@ if($statusFilter !== '') {
 $whereClause = !empty($conditions) ? " WHERE " .implode(" AND ", $conditions) : '';
 
 // QUERY FOR SELECTING THE LIST APPLICANTS
-$count_sql = "SELECT COUNT(*) AS total_applications 
+$count_sql = "SELECT COUNT(*) AS total_applications,
+                SUM(CASE WHEN LOWER(a.status) = 'active' THEN 1 ELSE 0 END) AS total_active,
+                SUM(CASE WHEN LOWER(a.status) = 'inactive' THEN 1 ELSE 0 END) AS total_inactive,
+                SUM(CASE WHEN LOWER(a.status) = 'pending' THEN 1 ELSE 0 END) AS total_pending
                 FROM applications a
                 INNER JOIN users u ON a.user_id = u.id"
                 . $whereClause;
@@ -46,8 +49,16 @@ if(!empty($params)) {
 }
 
 $count_stmt->execute();
-$total_applicants = $count_stmt->get_result()->fetch_assoc()['total_applications'];
-$total_page = max(1, (int)ceil($total_applicants / $page_shown_scholars));
+$counts = $count_stmt->get_result()->fetch_assoc();
+
+$approve = (int)($counts['total_active'] ?? 0);
+$rejeceted = (int)($counts['total_inactive'] ?? 0);
+$pending = (int)($counts['total_pending'] ?? 0);
+$allApplicants = (int)($counts['total_applications'] ?? 0);
+
+$total_page = max(1, (int)ceil($allApplicants / $page_shown_scholars));
+
+
 
 if($page_setup > $total_page) {
     $page_setup = $total_page;
@@ -85,6 +96,8 @@ function paginationLink($page_number) {
     
     return 'index.php?' . http_build_query($query);
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -103,8 +116,25 @@ function paginationLink($page_number) {
         <?php include "../../includes/sidebar.php"; ?>
 
         <main class="container-fluid flex-grow-1 p-4">
-            <div class="d-flex align-items-center justify-content-between gap-3 p-4 mb-4 border shadow-sm bg-white rounded">
-                <h2 class="text-uppercase mb-0">Applications</h2>
+            <div class="d-flex flex-column justify-content-between flex-lg-row flex-md-column align-items-lg-center gap-2 p-4 px-4 mb-4 border shadow-sm bg-white rounded">
+                <div>
+                    <h2 class="fs-2 text-uppercase fw-bold"> Applicant Reports</h2>
+                    <p class="badge bg-warning"> 
+                        TOTAL APPLICANTS<?php echo $allApplicants; ?>
+                    </p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="badge bg-success p-2">
+                        TOTAL APPROVED: <?php echo $approve; ?>
+                    </span>
+                    <span class="badge bg-danger p-2">
+                        TOTAL REJECTED: <?php echo $rejeceted; ?>
+                    </span>
+
+                    <span class="badge bg-primary p-2">
+                        TOTAL PENDING: <?php echo $pending; ?>
+                    </span>
+                </div>
             </div>
 
             <div class="card border-0 shadow-sm rounded-1 p-3 px-4 py-4 mb-4">
@@ -154,33 +184,33 @@ function paginationLink($page_number) {
                             <th class="p-3 p-sm-4">SCHOLARSHIP</th>
                             <th class="p-3 p-sm-4">STATUS</th>
                             <th class="p-3 p-sm-4">ACTION</th>
-                        </tr>
+                        </tr>   
                     </thead>
 
                     <tbody>
                         <?php 
                         if ($selectResult->num_rows > 0) {
-                            while($row = $selectResult->fetch_assoc()) {
+                            while ($fetch = $selectResult->fetch_assoc()) :
                                 $badgeClass = "bg-secondary";
-                                if(strtolower($row['status']) == 'active') $badgeClass = "bg-success";
-                                if(strtolower($row['status']) == 'pending') $badgeClass = "bg-warning text-dark";
-                                if(strtolower($row['status']) == 'inactive') $badgeClass = "bg-danger";
+                                if(strtolower($fetch['status']) == 'active') $badgeClass = "bg-success";
+                                if(strtolower($fetch['status']) == 'pending') $badgeClass = "bg-warning text-dark";
+                                if(strtolower($fetch['status']) == 'inactive') $badgeClass = "bg-danger";
                         ?>
                         <tr>
-                            <td data-label="APPLICANT ID" class="fw-bold text-center"><?php echo htmlspecialchars($row['application_ID']); ?></td>
-                            <td data-label="NAME" class="text-center"> <?php echo htmlspecialchars($row['fullname']);?></td>
-                            <td data-label="SCHOLARSHIP" class="text-center"> <?php echo htmlspecialchars(str_replace('_', '', $row['scholarship_type'])); ?></td>
+                            <td data-label="APPLICANT ID" class="fw-bold text-center"><?php echo htmlspecialchars($fetch['application_ID']); ?></td>
+                            <td data-label="NAME" class="text-center"> <?php echo htmlspecialchars($fetch['fullname']);?></td>
+                            <td data-label="SCHOLARSHIP" class="text-center"> <?php echo htmlspecialchars(str_replace('_', '', $fetch['scholarship_type'])); ?></td>
                             <td data-label="STATUS" class="text-center"> 
                                 <span class="badge <?php echo $badgeClass;?> text-uppercase px-3 py-2">
-                                    <?php echo htmlspecialchars($row['status']);?>
+                                    <?php echo htmlspecialchars($fetch['status']);?>
                                 </span>
                             </td>
                             <td data-label="ACTION" class="d-flex flex-column gap-2">
-                                <a href="approved.php?id=<?php echo $row['application_ID'];?>" class="index-btn btn btn-primary fw-bold ">Approved</a>
-                                <a href="rejected.php?id=<?php echo $row['application_ID'];?>" class="index-btn btn btn-danger fw-bold">Rejected</a>
+                                <a href="approved.php?id=<?php echo $fetch['application_ID'];?>" class="index-btn btn btn-primary fw-bold ">Approved</a>
+                                <a href="rejected.php?id=<?php echo $fetch['application_ID'];?>" class="index-btn btn btn-danger fw-bold">Rejected</a>
                             </td>
                         </tr>
-                        <?php } 
+                        <?php  endwhile;
                         }
                         else { ?>
 
@@ -221,7 +251,7 @@ function paginationLink($page_number) {
                     <p class="text-muted text-center small">
                         Showing Page <?php echo $page_setup; ?>
                         of <?php echo $total_page; ?>
-                        (<?php echo $total_applicants;?> total Applicants)
+                        (<?php echo $allApplicants;?> total Applicants)
                     </p>
                 </nav>
                 <?php endif; ?>
