@@ -37,7 +37,8 @@ if($status !== '') {
 
 $where_clause = !empty($conditions) ? " WHERE ".implode(" AND ", $conditions) : "";
 
-$count_scholar = "SELECT COUNT(*) AS total_scholars FROM scholars" . $where_clause;
+$count_scholar = "SELECT COUNT(*) AS total_scholars
+                FROM scholars" . $where_clause;
 $count_stmt = $conn->prepare($count_scholar);
 
 if(!$count_stmt) die ("DATABASE FAILED. CONTACT ADMIN");

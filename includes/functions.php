@@ -35,4 +35,49 @@ function notificationAlert($conn, $userID, $title, $message) {
     return false;
 }
 
+function getEventSettings($conn, $key, $default = "") {
+    $key_sql = "SELECT settings_value FROM settings
+                WHERE settings_key = ?
+                LIMIT 1";
+    $key_stmt = $conn->prepare($key_sql);
+
+    if(!$key_stmt) return $default;
+
+    $key_stmt->bind_param("S ", $key);
+
+    if(!$key_stmt->execute()) {
+        $key_stmt->close();
+        return $default;
+    }
+
+    $eventResult = $key_stmt->get_result();
+    $rowEvent = $eventResult->fetch_assoc();
+
+    $key_stmt->close();
+
+    return $rowEvent['settings_value'] ?? $default;
+}
+
+function updateEventSettings($conn, $key, $value, $description = '') {
+    $update_sql = "INSERT INTO settings (settings_key, settings_value, description)
+                    VALUES (?, ?, ?)
+                    ON DUPLICATE KEY UPDATE
+                    settings_value = VALUES(settings_value),
+                    description = VALUES(description),
+                    updated_at = CURRENT_TIMESTAMP";
+    $update_stmt = $conn->prepare($update_sql);
+
+    if(!$update_stmt) return false;
+
+    $update_stmt->bind_param("sss", $key, $value, $description);
+
+    if(!$update_stmt->execute()) {
+        $update_stmt->close();
+        return false;
+    }
+    $success = $update_stmt->execute();
+
+    return $success;
+}
+
 ?>

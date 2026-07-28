@@ -37,6 +37,9 @@ function isSidebarActive($paths)
             <li class="nav-item">
                 <a href="/TVAM_SCHOLARSHIP/admin/reports/index-user.php" class="nav-link<?php echo isSidebarActive('/TVAM_SCHOLARSHIP/admin/reports/index-user.php'); ?>"> 👤 Users Reports</a>
             </li>
+            <li class="nav-item">
+                <a href="/TVAM_SCHOLARSHIP/admin/settings/index.php" class="nav-link<?php echo isSidebarActive('/TVAM_SCHOLARSHIP/admin/settings/index.php'); ?>">Event Settings</a>
+            </li>
         </ul>
 
         <h4 class="text-muted text-bg-light fs-6 p-2 rounded-5 mt-3 text-center">APPLICATION PROFILING</h4>
