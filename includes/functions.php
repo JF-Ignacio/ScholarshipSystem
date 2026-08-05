@@ -43,7 +43,7 @@ function getEventSettings($conn, $key, $default = "") {
 
     if(!$key_stmt) return $default;
 
-    $key_stmt->bind_param("S ", $key);
+    $key_stmt->bind_param("s", $key);
 
     if(!$key_stmt->execute()) {
         $key_stmt->close();
@@ -75,9 +75,9 @@ function updateEventSettings($conn, $key, $value, $description = '') {
         $update_stmt->close();
         return false;
     }
-    $success = $update_stmt->execute();
 
-    return $success;
+    $update_stmt->close();
+    return true;
 }
 
 ?>
