@@ -3,9 +3,6 @@ require_once "../../config/database.php";
 require_once "../../config/admin-auth.php";
 require_once "../../includes/functions.php";
 
-$message = "";
-$badge = "";
-
 $event_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 $scholarshipStatus = [
@@ -31,6 +28,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     } 
 
     if(isset($_POST['app'])) {
+        $message_app = "";
+        $badge_app = "";
         $application_status = trim($_POST['application_deadline']) ?? '';
 
         if(empty($application_status)) {
@@ -39,12 +38,16 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         }
         else {
             $update_app = updateEventSettings($conn, 'application_deadline', $application_status, 'Student can now submit Application');
-            $message = $update_app ? 'Application date is set.' : 'No application date was set';
-            $badge = $update_app ? 'succes' : 'danger';
+            $message_app = $update_app ? 'Application date is set.' : 'No application date was set';
+            $badge_app = $update_app ? 'success' : 'danger';
         }
     }
 
     if(isset($_POST['file'])) {
+
+        $message_file = "";
+        $badge_file = "";
+
         $file_status = trim($_POST['file_deadline']) ?? '';
 
         if(empty($file_status)) {
@@ -54,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         else {
             $file_update = updateEventSettings($conn, 'file_deadline', $file_status, 'Student now can process file submission');
-            $message = $file_update ? 'File Deadline is set.' : 'File deadline settings is in error';
-            $badge = $file_update ? 'success' : 'danger';
+            $message_file = $file_update ? 'File Deadline is set.' : 'File deadline settings is in error';
+            $badge_file = $file_update ? 'success' : 'danger';
         }
     }
 
@@ -151,11 +154,11 @@ $file = $settings['file_deadline'] ?? '';
                             <form action="" method="POST" class="form-group">
                                 <div>
                                     <label for="deadline" class="form-label">KEY: </label>
-                                    <input type="text" name="" id="" class="form-control" value="" readonly>
+                                    <input type="text" name="" id="" class="form-control" value="<?php echo $application; ?>" readonly>
                                 </div>
                                 <div>
                                     <label for="application_deadline">SETTINGS: </label>
-                                    <input type="date" name="application_deadline" id="application_deadline" value="<?php echo $application; ?>">
+                                    <input type="date" name="application_deadline" id="application_deadline">
                                 </div>
                                 <div>
                                     <button type="submit" name="app">ADD EVENT</button>
@@ -164,7 +167,9 @@ $file = $settings['file_deadline'] ?? '';
                         </div>
 
                         <div class="card-footer">
-
+                            <p class="badge bg-<?php echo $badge_app; ?>">
+                                <?php echo htmlspecialchars($message_app); ?>
+                            </p>
                         </div>
                     </div>
                 </div>

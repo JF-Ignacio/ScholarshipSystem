@@ -14,7 +14,6 @@ $applicantID = (int) ($_GET['id'] ?? 0);
     u.fullname, 
     u.email,
     s.status
-
     FROM applications a 
     INNER JOIN users u ON a.user_id = u.id 
     LEFT JOIN scholars s ON a.user_id = s.student_id
