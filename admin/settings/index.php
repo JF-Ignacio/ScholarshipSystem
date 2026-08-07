@@ -3,6 +3,9 @@ require_once "../../config/database.php";
 require_once "../../config/admin-auth.php";
 require_once "../../includes/functions.php";
 
+$message = "";
+$badge = "";
+
 $event_ID = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 $scholarshipStatus = [
@@ -11,54 +14,67 @@ $scholarshipStatus = [
     'upcoming'
 ];
 
+$feedBack = [
+    'scholar' => ['message' => '', 'badge' => ''],
+    'application' => ['message' => '', 'badge' => ''],
+    'file' => ['message' => '', 'badge' => '']
+];
+
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if(isset($_POST['scholar'])) {
 
         $status = $_POST['scholarship_status'] ?? '';
 
         if(!in_array($status, $scholarshipStatus, true)) {
-            $message = "Event added successfully.";
-            $badge = "danger";
+            $feedBack['scholar'] = [
+                'message' => 'Invalid Status Selected',
+                'badge' => 'danger'
+            ];
         }
         else {
             $update = updateEventSettings($conn, 'scholarship_status', $status, 'Student can now Submit Scholarship');
-            $message = $update ? 'Event Successfully added' : 'Event failed to add';
-            $badge = $update ? 'success' : 'danger';
+            $feedBack['scholar'] = [
+                'message' => 'Event added successfully',
+                'badge' => 'success'
+            ];
         }
     } 
 
     if(isset($_POST['app'])) {
-        $message_app = "";
-        $badge_app = "";
         $application_status = trim($_POST['application_deadline']) ?? '';
 
         if(empty($application_status)) {
-            $message = "Date is empty. Apply deadline now.";
-            $badge = "warning";
+            $feedBack['application'] = [
+                'message' => 'Data is empty.',
+                'badge' => 'danger'
+            ];
         }
         else {
             $update_app = updateEventSettings($conn, 'application_deadline', $application_status, 'Student can now submit Application');
-            $message_app = $update_app ? 'Application date is set.' : 'No application date was set';
-            $badge_app = $update_app ? 'success' : 'danger';
+            $feedBack['application'] = [
+                'message' => 'Event Added Successfully',
+                'badge' => 'success'
+            ];
         }
     }
 
     if(isset($_POST['file'])) {
-
-        $message_file = "";
-        $badge_file = "";
-
         $file_status = trim($_POST['file_deadline']) ?? '';
 
         if(empty($file_status)) {
-            $message = "File deadline is empty.";
-            $badge = "warning";
+            $feedBack['scholar'] = [
+                'message' => 'Invalid Status Selected',
+                'badge' => 'danger'
+            ];
         }
 
         else {
             $file_update = updateEventSettings($conn, 'file_deadline', $file_status, 'Student now can process file submission');
-            $message_file = $file_update ? 'File Deadline is set.' : 'File deadline settings is in error';
-            $badge_file = $file_update ? 'success' : 'danger';
+            $feedBack['scholar'] = [
+
+                'message' => 'Event Successfully added',
+                'badge' => 'success'
+            ];
         }
     }
 
@@ -137,7 +153,7 @@ $file = $settings['file_deadline'] ?? '';
                         </div>
 
                         <div class="card-footer">
-                            <span class="badge bg-<?php echo $badge?>">
+                            <span class="badge bg-<?php echo $badge; ?>">
                                 <?php echo htmlspecialchars($message); ?>
                             </span>
                         </div>
@@ -167,9 +183,9 @@ $file = $settings['file_deadline'] ?? '';
                         </div>
 
                         <div class="card-footer">
-                            <p class="badge bg-<?php echo $badge_app; ?>">
-                                <?php echo htmlspecialchars($message_app); ?>
-                            </p>
+                            <span class="badge bg-<?php echo $badge; ?>">
+                                <?php echo htmlspecialchars($message); ?>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -198,7 +214,9 @@ $file = $settings['file_deadline'] ?? '';
                         </div>
 
                         <div class="card-footer">
-
+                            <span class="badge bg-<?php echo $badge; ?>">
+                                <?php echo htmlspecialchars($message); ?>
+                            </span>
                         </div>
                     </div>
                 </div>
