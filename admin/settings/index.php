@@ -22,7 +22,6 @@ $feedBack = [
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if(isset($_POST['scholar'])) {
-
         $status = $_POST['scholarship_status'] ?? '';
 
         if(!in_array($status, $scholarshipStatus, true)) {
@@ -34,8 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         else {
             $update = updateEventSettings($conn, 'scholarship_status', $status, 'Student can now Submit Scholarship');
             $feedBack['scholar'] = [
-                'message' => 'Event added successfully',
-                'badge' => 'success'
+                'message' => $update ? 'Event added successfully' : 'Failed to add event',
+                'badge' => $update ? 'success' : 'danger'
             ];
         }
     } 
@@ -52,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         else {
             $update_app = updateEventSettings($conn, 'application_deadline', $application_status, 'Student can now submit Application');
             $feedBack['application'] = [
-                'message' => 'Event Added Successfully',
-                'badge' => 'success'
+                'message' => $update_app ? 'Event Added Successfully' : 'Failed to updated',
+                'badge' => $update_app ? 'success' : 'danger'
             ];
         }
     }
@@ -62,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $file_status = trim($_POST['file_deadline']) ?? '';
 
         if(empty($file_status)) {
-            $feedBack['scholar'] = [
+            $feedBack['file'] = [
                 'message' => 'Invalid Status Selected',
                 'badge' => 'danger'
             ];
@@ -70,10 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
         else {
             $file_update = updateEventSettings($conn, 'file_deadline', $file_status, 'Student now can process file submission');
-            $feedBack['scholar'] = [
-
-                'message' => 'Event Successfully added',
-                'badge' => 'success'
+            $feedBack['file'] = [
+                'message' => $file_update ? 'Event Successfully added' : 'Failed to add.',
+                'badge' => $file_update ? 'success' : 'danger'
             ];
         }
     }
@@ -120,103 +118,105 @@ $file = $settings['file_deadline'] ?? '';
     <div class="min-vh-100 d-flex flex-column flex-md-row">
         <?php include "../../includes/sidebar.php"; ?>
 
-        <main class="container-fluid flex-grow-1 p-4 px-5">
-            <div class="event-head text-uppercase p-4">
-                <h4 class="fw-bold">Configurationg Settings</h4>
-                <div class="support-text d-flex flex-row gap-4 mt-4 text-uppercase small text-muted">
-                    <p>Manage scholarship event</p>
-                    <p>Application Deadline</p>
-                    <p>Document Submission</p>
+        <main class="container-fluid flex-grow-1 p-3 p-md-4 px-3 px-md-5">
+            <div class="event-head text-uppercase p-3 p-md-4">
+                <h4 class="fw-bold">Configuration Settings</h4>
+                <div class="support-text d-flex flex-column flex-sm-row flex-wrap gap-2 gap-sm-4 mt-3 text-uppercase small text-muted">
+                    <p class="mb-0">Manage scholarship event</p>
+                    <p class="mb-0">Application Deadline</p>
+                    <p class="mb-0">Document Submission</p>
                 </div>
             </div>
-            <div class="row p-3">
-                <div class="col-4 col-lg-4">
-                    <div class="card shadow-sm">
-                        <div class="card-header">
+
+            <div class="row g-3 g-md-4 p-2 p-md-3">
+
+                <!-- SCHOLARSHIP EVENT CARD -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-transparent text-center p-3">
                             <h4>SCHOLARSHIP EVENT</h4>
                         </div>
-                        <div class="card-body">
-                            <form action="" method="POST">
+                        <div class="card-body d-flex flex-column p-3 p-md-4 align-items-stretch">
+                            <form action="" method="POST" class="d-flex flex-column gap-3">
                                 <div>
-                                    <label for="school_name">KEY: <label>
-                                    <input type="text" name="school_name" id="" value="<?php echo htmlspecialchars($schoolName); ?>" readonly>
+                                    <label for="school_name" class="form-label">KEY:</label>
+                                    <input type="text" name="school_name" id="school_name" class="form-control" value="<?php echo htmlspecialchars($schoolName); ?>" readonly>
                                 </div>
                                 <div>
-                                    <label for="scholarship_status">SETTINGS: </label>
-                                    <select name="scholarship_status" id="">
-                                        <option value="open">OPEN</option>
-                                        <option value="closed">CLOSE</option>
+                                    <label for="scholarship_status" class="form-label">SETTINGS:</label>
+                                    <select name="scholarship_status" id="scholarship_status" class="form-select">
+                                        <option value="open" <?php echo ($schoolName === 'open') ? 'selected' : ''?>>OPEN</option>
+                                        <option value="closed" <?php echo ($schoolName === 'closed') ? 'selected' : ''?>>CLOSE</option>
+                                        <option value="upcoming" <?php echo ($schoolName === 'upcoming') ? 'selected' : ''?>>UPCOMING</option>
                                     </select>
                                 </div>
-                                <button type="submit" name="scholar">EDIT EVENT</button>
+                                <button type="submit" name="scholar" class="btn btn-primary w-100">EDIT EVENT</button>
                             </form>
                         </div>
-
                         <div class="card-footer">
-                            <span class="badge bg-<?php echo $badge; ?>">
-                                <?php echo htmlspecialchars($message); ?>
+                            <?php if(!empty($feedBack['scholar']['message'])) : ?>
+                            <span class="badge bg-<?php echo $feedBack['scholar']['badge']; ?>">
+                                <?php echo htmlspecialchars($feedBack['scholar']['message']); ?>
                             </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-4 col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
+                <!-- APPLICATION DEADLINE CARD -->
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-transparent text-center p-3">
                             <h4>APPLICATION DEADLINE</h4>
                         </div>
-
-                        <div class="card-body">
-                            <form action="" method="POST" class="form-group">
+                        <div class="card-body d-flex flex-column p-3 p-md-4">
+                            <form action="" method="POST" class="d-flex flex-column gap-3">
                                 <div>
-                                    <label for="deadline" class="form-label">KEY: </label>
-                                    <input type="text" name="" id="" class="form-control" value="<?php echo $application; ?>" readonly>
+                                    <label for="deadline_key" class="form-label">KEY:</label>
+                                    <input type="text" id="deadline_key" class="form-control" value="<?php echo htmlspecialchars($application); ?>" readonly>
                                 </div>
                                 <div>
-                                    <label for="application_deadline">SETTINGS: </label>
-                                    <input type="date" name="application_deadline" id="application_deadline">
+                                    <label for="application_deadline" class="form-label">SETTINGS:</label>
+                                    <input type="date" name="application_deadline" id="application_deadline" class="form-control">
                                 </div>
-                                <div>
-                                    <button type="submit" name="app">ADD EVENT</button>
-                                </div>
+                                <button type="submit" name="app" class="btn btn-primary w-100">ADD EVENT</button>
                             </form>
                         </div>
-
                         <div class="card-footer">
-                            <span class="badge bg-<?php echo $badge; ?>">
-                                <?php echo htmlspecialchars($message); ?>
+                            <?php if(!empty($feedBack['application']['message'])) : ?>
+                            <span class="badge bg-<?php echo $feedBack['application']['badge']; ?>">
+                                <?php echo htmlspecialchars($feedBack['application']['message']); ?>
                             </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-4 col-lg-4">
-                    <div class="card">
-                        <div class="card-header">
+                <!-- FILE CONTROL SETTINGS CARD -->
+                <div class="col-12 col-md-12 col-lg-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-transparent text-center p-3">
                             <h4>FILE CONTROL SETTINGS</h4>
                         </div>
-
-                        <div class="card-body">
-                            <form action="" method="POST">
+                        <div class="card-body d-flex flex-column p-3 p-md-4">
+                            <form action="" method="POST" class="d-flex flex-column gap-3">
                                 <div>
-                                    <label for="fileD">KEY: </label>
-                                    <input type="text" name="fileD" id="file" value="file_deadline">
+                                    <label for="file" class="form-label">KEY:</label>
+                                    <input type="text" name="fileD" id="file" class="form-control" value="<?php echo htmlspecialchars($file); ?>" readonly>
                                 </div>
                                 <div>
-                                    <label for="file_deadline">SETTINGS: </label>
-                                    <input type="text" name="file_deadline" value="<?php echo $file; ?>">
+                                    <label for="file_deadline" class="form-label">SETTINGS:</label>
+                                    <input type="date" name="file_deadline" id="file_deadline" class="form-control" value="<?php echo htmlspecialchars($file); ?>">
                                 </div>
-
-                                <div>
-                                    <button type="submit" name="file">ADD EVENT</button>
-                                </div>
+                                <button type="submit" name="file" class="btn btn-primary w-100">ADD EVENT</button>
                             </form>
                         </div>
-
                         <div class="card-footer">
-                            <span class="badge bg-<?php echo $badge; ?>">
-                                <?php echo htmlspecialchars($message); ?>
+                            <?php if(!empty($feedBack['file']['message'])) : ?>
+                            <span class="badge bg-<?php echo $feedBack['file']['badge']; ?>">
+                                <?php echo htmlspecialchars($feedBack['file']['message']); ?>
                             </span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
