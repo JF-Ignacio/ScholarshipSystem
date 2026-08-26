@@ -18,15 +18,17 @@ function sendResetEmail($recipientEmail, $recipientName, $resetLink)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'YOUR_GMAIL@gmail.com';
-        $mail->Password   = 'YOUR_APP_PASSWORD';
+
+        $mail->Username   = 'franzignaciopogi@gmail.com';
+        $mail->Password   = 'xjlc iups uzjg zjfq';
+        
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         // Sender
         $mail->setFrom(
-            'YOUR_GMAIL@gmail.com',
-            'TVAM Scholarship System'
+            'franzignaciopogi@gmail.com',
+            'TVAM Portal'
         );
 
         // Recipient

@@ -66,7 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>";
 
-                if (sendResetEmail($email, 'TVAM | Password Reset', $emailMessage)) {
+
+                if (sendResetEmail($email, $name, $emailMessage)) {
                     $message = "Password reset link has been sent to your email.";
                     $badge = "bg-success";
                 } else {

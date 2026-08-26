@@ -3,7 +3,6 @@
 require_once "../config/session.php";
 require_once "../config/database.php";
 
-
 $errorAlert = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -14,6 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($email) && !empty($password)) {
 
         // prepare data 
+        // $sql = "SELECT"
+        // $stmt = $conn->prepare($sql);
+        // $stmt->bind_param("s", $email);
+        // if(!$stmt->execute()) { die("database failed"); }
+        // $data = $stmt->get_result();
+        // $fetchDB = $data->fetch_assoc();
+
+        
         $stmt = mysqli_prepare($conn, "SELECT id, fullname, email, password, role FROM users WHERE email = ?");
 
         // bind data
