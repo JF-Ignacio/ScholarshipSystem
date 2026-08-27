@@ -21,7 +21,7 @@ function sendResetEmail($recipientEmail, $recipientName, $resetLink)
 
         $mail->Username   = 'franzignaciopogi@gmail.com';
         $mail->Password   = 'xjlc iups uzjg zjfq';
-        
+
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
@@ -32,12 +32,13 @@ function sendResetEmail($recipientEmail, $recipientName, $resetLink)
         );
 
         // Recipient
-        $mail->addAddress($recipientEmail, $recipientName);
+        $mail->addAddress($recipientEmail, $recipientName, $resetLink);
 
         // Email content
         $mail->isHTML(true);
         $mail->Subject = 'TVAM Scholarship - Password Reset';
 
+    
         $mail->Body = "
             <h2>Password Reset</h2>
 
@@ -54,7 +55,6 @@ function sendResetEmail($recipientEmail, $recipientName, $resetLink)
 
             <p>
                 <a href='{$resetLink}'>
-                    Reset Password
                 </a>
             </p>
 
@@ -66,6 +66,7 @@ function sendResetEmail($recipientEmail, $recipientName, $resetLink)
                 If you did not request this, you can safely ignore this email.
             </p>
         ";
+    
 
         $mail->AltBody =
             "Reset your password using this link: {$resetLink}";

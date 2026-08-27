@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($result->num_rows > 0) {
             $validateEmail = $result->fetch_assoc();
-            $user_id = $validateEmail['id']; // Extracted user_id for the Foreign Key
-            $name = $validateEmail['fullname'] ?? 'Student';
+            $user_id = $validateEmail['id']; // GET THE ID FROM USERS (FOREIGN KEY)
+            $name = $validateEmail['fullname'] ?? '';
 
             // 2. Generate token & expiration timestamp
             $token_details = bin2hex(random_bytes(32));
@@ -58,10 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 $emailMessage = "
                 <div>
-                    <h2>TVAM SCHOLARSHIP | PASSWORD RESET</h2>
-                    <h5>Hello, <strong>" . htmlspecialchars($name) . "</strong></h5>
-                    <p>We received a request to reset your password. Click the link below to set a new password. This link expires in 15 minutes.</p>
-                    <div style='margin: 20px 0;'> 
+                    <div style='margin: 20px 0;'>
                         <a href='{$resetLink}' style='background:#198754; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;'>Reset Password</a>
                     </div>
                 </div>";
@@ -127,7 +124,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </button>
                 </div>
             </form>
-
         </div>
     </div>
 </body>
