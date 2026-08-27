@@ -85,7 +85,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && $isValidTime) {
                 
                 $conn->commit();
 
-                $message = "Password change successfully. <a href='{$redirect}'>Login Again </a>";
+                $message = "
+                <div>
+                    <a href='{$redirect}'>
+                    Login Again
+                    </a>
+                </div>
+                ";
                 $badge = "success";
             }
             catch(Exception $e) {

@@ -74,20 +74,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/TVAM_SCHOLARSHIP/assets/js/bg.js"></script>
-    <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/admin.css">
     <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
     <link rel="icon" href="../assets/images/tvamlogo_web.png">
 </head>
 
 <body class="login-page">
-    <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center px-3">
-        <div class="card shadow p-4 mx-3 w-100" style="max-width: 400px;">
-            <div class="card-header d-flex align-items-center justify-content-center bg-transparent border-0 text-center">
-                <img src="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png" class="card-image-top img-fluid rounded-circl w-25"alt="TVAM Logo">
-                <h2 class="card-title">Login</h2>
+    <main class="login-layout">
+        
+        <section class="card login-card shadow-sm">
+            <div class="card-header bg-transparent border-0 text-center">
+                <img src="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png" class="login-logo" alt="TVAM Logo">
+                <h2 class="card-title">Welcome back</h2>
+                <p class="login-subtitle">Sign in to continue your scholarship journey.</p>
             </div>
 
-            <div class="card-body d-flex flex-column align-items-center">
+            <div class="card-body">
                 <form action="login.php" method="POST" class="d-flex flex-column gap-3 w-100">
                     <div class="form-group d-flex flex-column gap-2">
                         <label for="email">Email</label>
@@ -101,9 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <a href="/TVAM_SCHOLARSHIP/auth/forgot-password.php" class="text-center">Forgot Password?</a>
 
                     <div class="form-group d-flex flex-column gap-3">
-                        <button type="submit" class="btn btn-success" name="login">Login</button>
-                        <div class="form-text">Don't have an account?<a href="register.php" class="text-decoration-none align-items-center fst-italic fw-bold"> Register First</a></div>
-                        <a href="../index.php" class="text-center text-decoration-none text-uppercase text-light fst-italic btn btn-secondary">Back to Home page</a>
+                        <button type="submit" class="btn login-submit" name="login">Login</button>
+                        <div class="form-text text-center">Don't have an account?<a href="register.php" class="text-decoration-none align-items-center fst-italic fw-bold"> Register First</a></div>
+                        <a href="../index.php" class="btn login-home-link">Back to Home page</a>
                     </div>
                 </form>
             </div>
@@ -119,7 +120,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <?php } ?>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="login-information">
+            <div class="login-information-content border-0">
+                <h1 class="text-uppercase">Shape your future with TVAM Scholarship</h1>
+                <h3 class="text-dark text-muted text-uppercase fs-6">APPLY AND MAKE YOUR ACADEMIC JOURNEY MEMORABLE</h3>
+                <div class="login-information-media">
+                    <img src="" alt="">
+                </div>
+            </div>
+        </section>
+
+        <section class="login-modal">
+            <div class="login-modal-information border-0">
+                <h3>Partenered with Government</h3>
+                <p>Unlock skills and Potentials</p>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
