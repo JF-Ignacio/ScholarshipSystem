@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // 2. Generate token & expiration timestamp
             $token_details = bin2hex(random_bytes(32));
-            $expire_at = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+            $expire_at = date('Y-m-d H:i:s', strtotime('+30 minutes'));
 
             // 3. Clear existing tokens for this email
             $sanitize_sql = "DELETE FROM password_reset WHERE email = ?";
@@ -62,8 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a href='{$resetLink}' style='background:#198754; color:#fff; padding:10px 20px; text-decoration:none; border-radius:5px;'>Reset Password</a>
                     </div>
                 </div>";
-
-
                 if (sendResetEmail($email, $name, $emailMessage)) {
                     $message = "Password reset link has been sent to your email.";
                     $badge = "bg-success";
@@ -91,20 +89,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/TVAM_SCHOLARSHIP/assets/js/bg.js"></script>
-    <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/admin.css">
     <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
     <link rel="icon" href="../assets/images/tvamlogo_web.png">
 </head>
 
 <body class="bg-light">
-    <div class="container-fluid d-flex align-items-center justify-content-center min-vh-100 px-3">
-        <div class="card shadow-lg border-0 rounded-3" style="width: 100%; max-width: 420px;">
-
-            <div class="card-header bg-dark text-white text-center py-4 rounded-top-3 d-flex flex-column">
+    <div class="reset-container container-fluid d-flex align-items-center justify-content-center min-vh-100 px-3">
+        <div class="reset-main card">
+            <div class="reset-header card-header">
                 <h4 class="fw-bold mb-1">RESET PASSWORD</h4>
                 <p class="mb-0 small text-white-50">Enter your email to receive a reset link</p>
             </div>
-
             <form action="" method="POST">
                 <div class="card-body p-4">
                     <div class="mb-3">

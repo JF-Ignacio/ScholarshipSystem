@@ -4,6 +4,7 @@ include '../config/session.php';
 
 $message = "";
 $badge = "";
+$passwordResetSuccess = false;
 
 $email = trim($_GET['email'] ?? '');
 $token = trim($_GET['token'] ?? '');
@@ -85,14 +86,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && $isValidTime) {
                 
                 $conn->commit();
 
-                $message = "
-                <div>
-                    <a href='{$redirect}'>
-                    Login Again
-                    </a>
-                </div>
-                ";
+                $message = "Successful reset. Try logging in again.";
                 $badge = "success";
+                $passwordResetSuccess = true;
             }
             catch(Exception $e) {
                 $conn->rollback();
@@ -114,33 +110,33 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && $isValidTime) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TVAM | Forgot Password</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/admin.css">
     <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
     <link rel="icon" href="../assets/images/tvamlogo_web.png">
 </head>
-<body>
-    <div class="min-vh-100">
+<body class="reset-body">
+    <div class="reset-hero min-vh-100">
         <div class="container-fluid">
-            <div class="card">
-                <div class="card-header">
-                    <h4>VALIDATION</h4>
+            <div class="card shadow-sm">
+
+                <div class="card-header border-0 d-flex align-items-center flex-column justify-content-center bg-transparent py-3 px-1 text-center">
+                    <h4 class="fw-bold text-uppercase">RESET PASSWORD</h4>
+                    <p class="text-muted small text-uppercase">Make sure you remember your password this time.</p>
                 </div>
+                
                 <div class="card-body">
-                    <?php if($isValidTime): ?>
-                    <form action="" method="POST" class="form-control border-0">
-                        <div>
-                            <label for="new_password" class="form-label">New Password: </label>
-                            <input type="password" name="new" id="newpass">
-                            <button type="button" id="new_password_hide" onclick="hide('newpass', 'new_password_hide')">Show</button>
+                    <?php if($isValidTime && !$passwordResetSuccess): ?>
+                    <form action="" method="POST" class="form-group border-0 ">
+                        <div class="input">
+                            <label for="new_password" class="form-label fw-bold">New Password: </label>
+                            <input type="password" name="new" id="newpass" class="form-control">
                         </div>
 
-                        <div>
-                            <label for="new_password">Confirm Password: </label>
-                            <input type="password" name="confirm" id="confirmpass">
-                            <button type="button"  id="confirm_password_hide" onclick="hide('confirmpass', 'confirm_password_hide')" class="text-uppercase">SHOW</button>
+                        <div class="input">
+                            <label for="new_password" class="form-label fw-bold">Confirm Password: </label>
+                            <input type="password" name="confirm" id="confirmpass"  class="form-control">
+                            <button type="button"  id="new_password_hide" onclick="hide('newpass', 'confirmpass', 'new_password_hide')" class="mt-2">Show password ꗃ</button>
                         </div>
-                        <button type="submit" name="ValidateToken" id="btn-token">VERIFY</button>
+                        <button type="submit" name="ValidateToken" id="btn-token" class="mt-4">CONFIRM</button>
                     </form>
 
                     <?php else: ?>
@@ -150,7 +146,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && $isValidTime) {
                     <?php endif; ?>
                 </div>
 
-                <div class="card-footer bg-transparent">
+                <div class="card-footer bg-transparent border-0">
                     <?php if(!empty($message)): ?>
                     <div class="alert bg-<?php echo $badge; ?>" role="alert">
                         <small class="text-uppercase text-white fw-bold"><?php echo htmlspecialchars($message); ?></small>
@@ -159,8 +155,20 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && $isValidTime) {
                 </div>
             </div>
         </div>
+
+        <div class="reset-redirect">
+            <div id="resetSuccessPopup" class="reset-success-popup" data-show="<?php echo $passwordResetSuccess ? 'true' : 'false'; ?>">
+                <div class="reset-success-box">
+                    <h5>Password reset successful</h5>
+                    <p>Your password has been changed. You can now log in again using your new password.</p>
+                    <a href="login.php" class="reset-login-link">Go to Login</a>
+                </div>
+            </div>
+        </div>
     </div>
         <script src="/TVAM_SCHOLARSHIP/assets/js/validation.js"></script>
         <script src="/TVAM_SCHOLARSHIP/assets/js/bg.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

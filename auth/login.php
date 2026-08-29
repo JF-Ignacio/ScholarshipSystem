@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="login-page">
     <main class="login-layout">
         
-        <section class="card login-card shadow-sm">
+        <section class="card login-card shadow-lg">
             <div class="card-header bg-transparent border-0 text-center">
                 <img src="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png" class="login-logo" alt="TVAM Logo">
                 <h2 class="card-title">Welcome back</h2>
