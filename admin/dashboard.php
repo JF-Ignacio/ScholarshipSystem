@@ -74,6 +74,12 @@ $studentResult = $stmt_student->get_result()->fetch_assoc();
 $getStudent = $studentResult['total_student'] ?? 0;
 $stmt_student->close();
 
+$activePercent = $getApplicants > 0 ? min(100, round(($getActive / $getApplicants) * 100)) : 0;
+$inactivePercent = $getApplicants > 0 ? min(100, round(($getInactive / $getApplicants) * 100)) : 0;
+$scholarCoverage = $getApplicants > 0 ? min(100, round(($getScholars / $getApplicants) * 100)) : 0;
+$studentPercent = $totalUsers > 0 ? min(100, round(($getStudent / $totalUsers) * 100)) : 0;
+$adminPercent = $totalUsers > 0 ? min(100, round(($getAdmin / $totalUsers) * 100)) : 0;
+
 ?>
 
 <!DOCTYPE html>
@@ -91,118 +97,188 @@ $stmt_student->close();
     <div class="d-flex flex-column flex-md-row min-vh-100">
         <?php include "../includes/sidebar.php"; ?>
 
-        <main class="container-fluid p-4 d-flex flex-column flex-grow-1">
-            <div class="container-fluid mt-3 border p-4 shadow-sm bg-white rounded">
-                <div class="row align-items-center">
-                    <div class="col-md-6">
-                        <h2>Hello, <?php echo htmlspecialchars($getname); ?>
-                            <span class="badge bg-secondary fs-6 text-center"> <?php echo htmlspecialchars($getRole); ?></span>
-                        </h2> 
-                    </div>
-
-                    <div class="col-md-6 text-md-end"> 
-                        <a href="../admin/scholars/index.php" class="btn btn-primary">MANAGE SCHOLARS</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="container-fluid mt-3 d-flex flex-column flex-grow-1 mb-3">
-
-                <!--FIRST ROW-->
-                <div class="row g-3 flex-grow-2 p-3 px-3 py-3 d-flex text-center">
-                    <div class="col-12 col-md-6 col-lg-4 ">
-                        <div class="card h-100 border shadow-sm">
-                            <div class="card-body p-3">
-                                <h6 class="fs-5 text-muted text-uppercase font-weight-bold">Total TVAM USERS: </h6>
-                                <h2 class="fs-1 display-6 my-2"><?php echo htmlspecialchars($totalUsers); ?></h2>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 border shadow-sm">
-                            <div class="card-body p-3 bg-info">
-                                <h6 class="fs-5 text-muted text-uppercase font-weight-bold text-light">TOTAL SCHOLARS</h6>
-                                <h2 class="fs-1 display-6 my-2"><?php echo htmlspecialchars($getScholars); ?></h2>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-100 border shadow-sm">
-                            <div class="card-body p-3 bg-warning text-dark">
-                                <h6 class="fs-5 text-dark text-uppercase font-weight-bold">TOTAL SCHOLAR APPLICATIONS </h6>
-                                <h2 class="fs-3 display-6 my-2"><?php echo htmlspecialchars($getApplicants); ?></h2>
-                            </div>
-                        </div>
-                    </div>
+        <main class="admin-dashboard flex-grow-1">
+            <section class="dashboard-hero">
+                <div>
+                    <span class="dashboard-eyebrow">Admin Overview</span>
+                    <h1>Hello, <?php echo htmlspecialchars($getname); ?></h1>
+                    <p>Track scholarship activity, user access, and application status from one clean workspace.</p>
                 </div>
 
-                <!--SECOND ROW-->
-                <div class="row g-3 flex-grow-2 p-3 px-3 py-3 text-center">
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-75 border shadow-sm">
-                            <div class="card-body p-3 bg-success text-light">
-                                <h6 class="fs-5 text-lighttext-uppercase font-weight-bold">TOTAL ACTIVE APPLICATIONS </h6>
-                                <h2 class="fs-3 display-6 my-2"><?php echo htmlspecialchars($getActive); ?></h2>
-                            </div>
-                        </div>
-                    </div>
+                <div class="dashboard-hero-actions">
+                    <span class="role-chip"><?php echo htmlspecialchars($getRole); ?></span>
+                    <a href="../admin/scholars/index.php" class="btn btn-light dashboard-action">Manage Scholars</a>
+                </div>
+            </section>
 
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card h-75 border shadow-sm text-light">
-                            <div class="card-body p-3 bg-danger">
-                                <h6 class="fs-5 text-uppercase font-weight-bold">TOTAL INACTIVE APPLICANTS </h6>
-                                <h2 class="fs-3 display-6 my-2"><?php echo htmlspecialchars($getInactive); ?></h2>
-                            </div>
-                        </div>
+            <section class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="metric-card-top">
+                        <span class="metric-icon icon-users">U</span>
+                        <span class="metric-label">Total Users</span>
                     </div>
+                    <strong><?php echo htmlspecialchars($totalUsers); ?></strong>
+                    <span class="metric-note"><?php echo htmlspecialchars($getStudent); ?> students and <?php echo htmlspecialchars($getAdmin); ?> admins</span>
+                </div>
 
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="card border shadow-sm">
-                            <div class="card-body d-flex flex-column h-100">
-                                <h6 class="fs-6">AVERAGE SCHOOL ACCEPTING PERFORMANCE </h6>
-                                <span class="text-uppercase fs-6">Scholar's Performance: </span>
-                                <div class="progress mb-2" style="height: 10px;">
-                                    <div class="progress-bar  bg-primary" style="width: 88%;"> 88%</div>
+                <div class="metric-card">
+                    <div class="metric-card-top">
+                        <span class="metric-icon icon-scholars">S</span>
+                        <span class="metric-label">Scholars</span>
+                    </div>
+                    <strong><?php echo htmlspecialchars($getScholars); ?></strong>
+                    <span class="metric-note"><?php echo htmlspecialchars($scholarCoverage); ?>% of total applications</span>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-card-top">
+                        <span class="metric-icon icon-applications">A</span>
+                        <span class="metric-label">Applications</span>
+                    </div>
+                    <strong><?php echo htmlspecialchars($getApplicants); ?></strong>
+                    <span class="metric-note">Submitted scholarship records</span>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-card-top">
+                        <span class="metric-icon icon-active">P</span>
+                        <span class="metric-label">Active Rate</span>
+                    </div>
+                    <strong><?php echo htmlspecialchars($activePercent); ?>%</strong>
+                    <span class="metric-note"><?php echo htmlspecialchars($getActive); ?> active applications</span>
+                </div>
+            </section>
+
+            <section class="row g-4 mt-1">
+                <div class="col-12 col-xl-8">
+                    <div class="dashboard-panel h-100">
+                        <div class="panel-header">
+                            <div>
+                                <span class="dashboard-eyebrow">Application Status</span>
+                                <h2>Scholarship Pipeline</h2>
+                            </div>
+                            <a href="../admin/applications/index.php" class="panel-link">View reports</a>
+                        </div>
+
+                        <div class="status-summary">
+                            <div class="status-item">
+                                <div>
+                                    <span>Active Applications</span>
+                                    <strong><?php echo htmlspecialchars($getActive); ?></strong>
                                 </div>
+                                <span class="status-percent text-success"><?php echo htmlspecialchars($activePercent); ?>%</span>
+                            </div>
 
-                                <span class="text-uppercase fs-6">School's academic ratings: </span>
-                                <div class="progress" style="height: 10px;">
-                                    <div class="progress-bar  bg-success" style="width: 92%;"> 92%</div>
+                            <div class="progress dashboard-progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo htmlspecialchars($activePercent); ?>%;" aria-valuenow="<?php echo htmlspecialchars($activePercent); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+
+                            <div class="status-item mt-4">
+                                <div>
+                                    <span>Inactive Applications</span>
+                                    <strong><?php echo htmlspecialchars($getInactive); ?></strong>
                                 </div>
+                                <span class="status-percent text-danger"><?php echo htmlspecialchars($inactivePercent); ?>%</span>
+                            </div>
+
+                            <div class="progress dashboard-progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?php echo htmlspecialchars($inactivePercent); ?>%;" aria-valuenow="<?php echo htmlspecialchars($inactivePercent); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="pipeline-footer">
+                            <div>
+                                <span class="mini-label">Acceptance Coverage</span>
+                                <strong><?php echo htmlspecialchars($scholarCoverage); ?>%</strong>
+                            </div>
+                            <div>
+                                <span class="mini-label">Performance Target</span>
+                                <strong>92%</strong>
+                            </div>
+                            <div>
+                                <span class="mini-label">Scholar Rating</span>
+                                <strong>88%</strong>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!--THIRD ROW-->
-                <div class="row g-3 flex-grow-3 p-3 px-5 mt-2 text-center">
-                    <div class=" col-12 col-md-12 col-lg-6">
-                        <div class="admin-card card border shadow-sm h-100">
-                            <div class="card-body d-flex flex-column">
-                                <h2 class="text-dark text-uppercase fw-bold fs-5">TOTAL ADMINS:</h2>
-                                <h1> <?php echo htmlspecialchars($getAdmin); ?></h1>
+                <div class="col-12 col-xl-4">
+                    <div class="dashboard-panel h-100">
+                        <div class="panel-header">
+                            <div>
+                                <span class="dashboard-eyebrow">User Roles</span>
+                                <h2>Account Mix</h2>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-12 col-md-12 col-lg-6">
-                       <div class="student-card card border shadow-sm ">
-                            <div class="card-body d-flex flex-column">
-                                <h2 class="text-dark text-uppercase fw-bold fs-5">TOTAL STUDENT:</h2>
-                                <h1> <?php echo htmlspecialchars($getStudent); ?></h1>
+                        <div class="role-meter">
+                            <div class="role-meter-row">
+                                <span>Students</span>
+                                <strong><?php echo htmlspecialchars($getStudent); ?></strong>
                             </div>
+                            <div class="progress dashboard-progress">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?php echo htmlspecialchars($studentPercent); ?>%;" aria-valuenow="<?php echo htmlspecialchars($studentPercent); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="role-meter">
+                            <div class="role-meter-row">
+                                <span>Admins</span>
+                                <strong><?php echo htmlspecialchars($getAdmin); ?></strong>
+                            </div>
+                            <div class="progress dashboard-progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?php echo htmlspecialchars($adminPercent); ?>%;" aria-valuenow="<?php echo htmlspecialchars($adminPercent); ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="account-card">
+                            <span class="mini-label">System Access</span>
+                            <strong><?php echo htmlspecialchars($totalUsers); ?> registered accounts</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="row g-4 mt-1">
+                <div class="col-12 col-lg-8">
+                    <div class="dashboard-panel">
+                        <div class="panel-header">
+                            <div>
+                                <span class="dashboard-eyebrow">Quick Actions</span>
+                                <h2>Management Shortcuts</h2>
+                            </div>
+                        </div>
+
+                        <div class="quick-actions">
+                            <a href="../admin/scholars/index.php" class="quick-action">
+                                <span>Scholars</span>
+                                <strong>Manage scholarship records</strong>
+                            </a>
+                            <a href="../admin/applications/index.php" class="quick-action">
+                                <span>Applications</span>
+                                <strong>Review applicant reports</strong>
+                            </a>
+                            <a href="../admin/documents/index.php" class="quick-action">
+                                <span>Documents</span>
+                                <strong>Verify uploaded files</strong>
+                            </a>
+                            <a href="../admin/reports/logs.php" class="quick-action">
+                                <span>Logs</span>
+                                <strong>Check activity history</strong>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <div class="card mt-3">
-                    <div class="card-body w-100 d-flex flex-column shadow-sm">
-                        <h2>TVAM </h2>
+                <div class="col-12 col-lg-4">
+                    <div class="dashboard-panel spotlight-panel">
+                        <span class="dashboard-eyebrow">TVAM Scholarship</span>
+                        <h2>Admin Workspace</h2>
+                        <p>Use this dashboard as the starting point for daily scholarship monitoring and student support tasks.</p>
                     </div>
                 </div>
-            </div>
+            </section>
         </main>
     </div>
 
