@@ -18,17 +18,18 @@ $stmt_notif->execute();
 $unreadData = $stmt_notif->get_result();
 ?>
 
-<?php include "../includes/header.php"; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notifications</title>
-    <!-- Assuming your header.php includes Bootstrap 5, otherwise include it here -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
+    <link rel="icon" href="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png">
 </head>
-<body class="bg-light">
+<body class="student-layout bg-light">
+    <?php include "../includes/sidebar-student.php"; ?>
     
     <div class="container container-fluid py-5 w-100">
         <div class="mb-4 ">
@@ -75,6 +76,7 @@ $unreadData = $stmt_notif->get_result();
         </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 <?php $stmt_notif->close(); ?>

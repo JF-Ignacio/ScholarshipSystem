@@ -30,12 +30,125 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .navigation .nav-link {
     color: white !important;
     font-size: 16px;
 }
 
+.student-layout {
+    min-height: 100vh;
+    padding-left: 78px;
+    background:
+        radial-gradient(ellipse at top left, rgba(51,80,122,0.06), transparent 55%),
+        var(--paper);
+}
+
+.student-sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1040;
+    width: 78px;
+    height: 100vh; /* Changed from min-height to height for fixed sidebar */
+    background-color: #010254;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.9rem 0.65rem;
+    box-shadow: 6px 0 18px rgba(1, 2, 84, 0.18);
+}
+
+.student-sidebar-brand,
+.student-sidebar-link {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.student-sidebar-brand {
+    margin-bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.student-sidebar-logo {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.student-sidebar-nav {
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap:rem;
+}
+
+.student-sidebar-item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.student-sidebar-link {
+    color: rgba(255, 255, 255, 0.7);
+    border: 1px solid transparent;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.student-sidebar-link:hover,
+.student-sidebar-link:focus,
+.student-sidebar-link.active {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.24);
+}
+
+.student-sidebar-link:active {
+    transform: translateY(1px);
+}
+
+/* UPDATED ICON STYLES FOR BOOTSTRAP ICONS */
+.student-sidebar-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    border: none; /* Removed fixed square border */
+    border-radius: 0;
+}
+
+.student-sidebar-logout {
+    margin-top: auto;
+}
+
+@media (max-width: 575.98px) {
+    .student-layout {
+        padding-left: 64px;
+    }
+
+    .student-sidebar {
+        width: 64px;
+        padding-left: 0.45rem;
+        padding-right: 0.45rem;
+    }
+
+    .student-sidebar-brand,
+    .student-sidebar-link {
+        width: 42px;
+        height: 42px;
+    }
+
+    .student-sidebar-icon {
+        font-size: 1.1rem;
+    }
+}
 
 .login-page {
     background-color: #010254;
@@ -1109,9 +1222,6 @@
 
 /*STUDENT UPLOAD DOCUMENTS*/
 
-.student-upload {
-    overflow: hidden !important;
-}
 
 .student-upload.card-body {
     background: linear-gradient(45deg, rgb(10, 10, 112), white, rgb(10, 10, 112)) !important;
@@ -1151,7 +1261,7 @@ body.student-upload {
 .upload-shell {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 4rem;
+    padding: 2rem 1.5rem 4rem;
 }
 
 .shell-heading {
@@ -1617,4 +1727,3 @@ table.ledger-table td {
     background: #111a76;
     color: #ffffff;
 }
-

@@ -3,6 +3,8 @@
 include "../config/database.php";
 require_once "../config/student-auth.php";
 
+$fullname = $_SESSION['fullname'] ?? "Student";
+
 ?>
 
 <!DOCTYPE html>
@@ -16,12 +18,12 @@ require_once "../config/student-auth.php";
     <link rel="icon" href="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png">
 </head>
 
-<body>
-    <?php include "../includes/header.php";?>
+<body class="student-layout">
+    <?php include "../includes/sidebar-student.php";?>
 
     <div class="container-fluid">
         <div class="row">
-            <aside class="col-md-4 col-lg-4 bg-dark text-light min-vh-75 p-4 d-flex flex-column align-items-center">
+            <aside class="d-none">
                 <div class="w-100 d-flex flex-column p-3 gap-3 px-4 ">
                     <div class="row d-flex">
                         <div class="col-md-4 col-lg-4 col-sm-2">
@@ -56,11 +58,11 @@ require_once "../config/student-auth.php";
                 </div>
             </aside>
 
-            <main class="col-md-8 col-lg-8 min-vh-100 p-5 px-4 py-5 bg-light">
+            <main class="col-12 min-vh-100 p-5 px-4 py-5 bg-light">
                     <div class="container-fluid d-flex flex-column gap-3 px-4">
                         <div class="profile-main-card card w-50 p-3 rounde-2 shadow-lg">
                             <div class="card-body ">
-                                <h2>Welcome, Rai!</h2>
+                                <h2>Welcome, <?php echo htmlspecialchars($fullname); ?>!</h2>
                             </div>
                         </div>
 
@@ -87,3 +89,4 @@ require_once "../config/student-auth.php";
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+</html>

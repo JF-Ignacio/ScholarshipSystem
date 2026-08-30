@@ -120,24 +120,25 @@ $type_meta = [
 
 ?>
 
-<?php include "../includes/header.php"; ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
+    <link rel="icon" href="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png">
     <title>Uploads</title>
     <style>
     </style>
 </head>
-<body class="student-upload"> 
-    <div class="upload-shell">
+<body class="student-layout student-upload">
+    <?php include "../includes/sidebar-student.php"; ?>
 
+    <div class="upload-shell">
         <div class="shell-heading">
             <span class="eyebrow">Student Portal &middot; Document Intake</span>
             <h1>Upload Documents</h1>
@@ -240,5 +241,6 @@ $type_meta = [
 
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -93,17 +93,7 @@
     overflow: hidden;
     padding: clamp(1.35rem, 3vw, 2.25rem);
     position: relative;
-}
-
-.dashboard-hero::after {
-    background: linear-gradient(180deg, rgba(248, 193, 74, 0.9), rgba(255, 255, 255, 0));
-    content: "";
-    height: 100%;
-    opacity: 0.65;
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 6px;
+    border-left: 10px solid rgb(225, 0, 0);
 }
 
 .dashboard-eyebrow {

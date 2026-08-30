@@ -1,0 +1,74 @@
+* {box-sizing: border-box; }
+
+.student-dash {
+    padding: clamp(1rem, 2vw, 2rem);
+
+}
+
+.student-dashboard-hero {
+    padding: 1rem;
+    overflow: hidden;
+
+}
+.student-dashboard-hero .card {
+    background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(30, 64, 175, 0.92)),
+    #111827;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+}
+.student-dashboard-hero .card > div:first-child {
+    min-width: 0;
+    flex: 1 1 260px;
+}
+
+.student-dashboard-hero .card h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    overflow-wrap: break-word;
+   
+}
+.student-dashboard-hero .card p,
+.student-dashboard-hero .card span {
+   color: rgb(215, 180, 180);
+}
+
+.student-dashboard-cta {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    justify-content: center;
+    flex: 0 0 auto;  
+    flex-shrink: 0;      /* don't grow/shrink — keep it compact */
+}
+.student-dashboard-cta .role {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    display: block;
+    color: whitesmoke;
+    padding: clamp(0.4rem, 4vw, 0.1rem);
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+ .student-dashboard-cta a {
+    padding:clamp(0.4rem, 4vw, 0.1rem) ;
+    font-weight: 800;
+    width: 100%;
+ }
+
+@media (max-width: 767.98px) {
+    .student-dashboard-cta {
+        width: 100%;
+        align-items: stretch;
+    }
+}
