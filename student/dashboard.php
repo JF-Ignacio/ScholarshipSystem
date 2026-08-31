@@ -8,6 +8,11 @@ $role = $_SESSION['role'] ?? "";
 $fullname = $_SESSION['fullname'] ?? "";
 $status = $_SESSION['status'] ?? "NO APPLICATION DATA";
 
+$scholar = "SELECT course, year_level, scholarship_type FROM scholars";
+$scholar_result = $conn->query($scholar);
+$get_scholar = $scholar_result->fetch_assoc();
+
+
 
 ?>
 <!DOCTYPE html>
@@ -42,20 +47,39 @@ $status = $_SESSION['status'] ?? "NO APPLICATION DATA";
         </div>  
     </section>
 
-    <section class="student-grid px-4">
+    <section class="student-grid px-4 mt-3">
         <div class="student-card-metric" id="scholarship-status">
-            <div class="scholarship-header">
-                <h4>SCHOLARSHIP STATUS</h4>
+            <div class="metric-header">
+                <h4>SCHOLARSHIP</h4>
             </div>
-            <span></span>
+            <span class="text-uppercase"><?php echo htmlspecialchars($get_scholar['scholarship_type']); ?></span>
+            <span class="scholar-rate">SCHOLAR RATE: 45%</span>
         </div>
 
         <div class="student-card-metric" id="student-status">
-            <div class="scholarship-header">
-                <h4>STUDENT STATUS</h4>
+            <div class="metric-header">
+                <h4>STATUS</h4>
             </div>
-            <span></span>
+            <span class="text-uppercase"> <?php echo htmlspecialchars($role); ?></span>
         </div>
+
+        <div class="student-card-metric" id="student-status">
+            <div class="metric-header">
+                <h4>YEAR LEVEL</h4>
+            </div>
+            <span class="text-uppercase"></span>
+        </div>
+
+        <div class="student-card-metric" id="student-status">
+            <div class="metric-header">
+                <h4>COURSE / PROGRAM</h4>
+            </div>
+            <span class="text-uppercase"></span>
+        </div>
+
+
+
+
     </section>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
