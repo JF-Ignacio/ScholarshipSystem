@@ -1,7 +1,7 @@
 * {box-sizing: border-box; }
 
 .student-dash {
-    padding: clamp(1rem, 2vw, 2rem);
+    padding: clamp(1rem, 3vw, 1rem);
 
 }
 
@@ -33,7 +33,7 @@
     position: absolute;
     top: -10%;
     left: -7%;
-    width: clamp(120px, 30vw, 200px);
+    width: clamp(200px, 30vw, 190px);
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     pointer-events: none;   /* so it never blocks clicks on real content */
@@ -87,4 +87,22 @@
         width: 100%;
         align-items: stretch;
     }
+
+    .student-dashboard-hero .card::before {
+        top: -30%;
+        left: -20%;
+    }
+}
+
+.student-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.student-card-metric {
+    min-height: 160px;
+    background-color: white;
+    padding: clamp(1rem, 4vw, 1rem);
+    box-shadow: 0px 0px 5px .5px rgba(0, 0, 0, 0.404);
 }
