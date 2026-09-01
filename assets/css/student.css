@@ -1,15 +1,10 @@
 * {box-sizing: border-box; }
 
 .student-dash {
-    padding: clamp(1rem, 3vw, 1rem);
-
+    padding: clamp(1rem, 4vw, 0.2rem);
 }
 
-.student-dashboard-hero {
-    padding: 1rem;
-    overflow: hidden;
 
-}
 .student-dashboard-hero .card {
     position: relative;   /* required — ::before positions relative to this */
     background:
@@ -92,6 +87,16 @@
         top: -30%;
         left: -20%;
     }
+    .student-card-metric {
+        min-height: auto;
+        width: 100%;
+    }
+}
+
+.dashboard-eyebrow {
+    letter-spacing: 0.12em;
+    font-size: clamp(0.4rem, 3vw, 0.7rem);
+    color: rgb(73, 76, 78);
 }
 
 .student-grid {
@@ -111,10 +116,6 @@
     flex-direction: column;
 }
 
-.student-card-metric .metric-header h4 {
-    font-size: clamp(1rem, 3vw, 1rem);
-    color: rgb(73, 76, 78);
-}
 .metric-header {
     gap: .4rem;
     display: flex;
@@ -122,8 +123,60 @@
     align-items: center;
 }
 
-
 .student-card-metric .text-uppercase {
     font-size: clamp(1.5rem, 3vw, 1rem);
     margin-bottom: 10px;
+}
+
+.document-panel {
+    padding: clamp(1rem, 4vw, 2rem);
+    background-color: white;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px .5px rgba(0, 0, 0, 0.404);
+
+}
+
+.document-report-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.document-report-header div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.document-main {
+    padding: clamp(1rem, 3vw, 0.2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+}
+
+.document-header, .text-uppercase {
+    letter-spacing: 2px;
+}
+
+.document-status {
+    font-size: 0.8rem;
+    border-radius: 10px;
+    padding: 0.3rem;
+    transform: rotate(4deg);
+    color: white;
+    border: 1px solid black;
+}
+
+.document {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 1rem;
+    align-items: center;
+    border-radius: 5px;
+    background-color: rgba(142, 209, 142, 0.742);
 }
