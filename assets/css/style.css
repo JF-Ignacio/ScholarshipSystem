@@ -301,7 +301,7 @@
 .login-information:hover {
     cursor: pointer;
 
-    transform: scale(1.2) translateY(-5px);
+    transform: scale(1.08) translateY(-5px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.62);
     z-index: 1;
 }
