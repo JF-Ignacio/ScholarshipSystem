@@ -187,3 +187,63 @@
     border-radius: 10px;
     box-shadow: 0px 0px 10px 0px rgba(213, 208, 208, 0.764);
 }
+
+.application-container-cta {
+    color: white;
+    background-color: rgb(27, 27, 27);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.application-cta {
+    padding: clamp(0.5rem, 4vw, 0.8rem);
+}
+
+.cta-header {
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgb(203, 197, 197);
+}
+
+.cta-hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.cta-hero h5 {
+    text-shadow: 1px 1px 15px white;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin: 0;
+}
+
+.apply-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(50px, 12vw, 35px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: white;
+    flex-shrink: 0;
+    transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.apply-btn a {
+    color: rgb(27, 27, 27);
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    display: flex;
+}
+
+.apply-btn:hover {
+    transform: scale(1.08);
+    background: rgb(230, 230, 230);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .apply-btn { transition: none; }
+}

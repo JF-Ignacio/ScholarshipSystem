@@ -61,7 +61,22 @@ $scholarship_deadline = $settings['scholarship_status'] ?? '';
 $application_deadline = $settings['application_deadline'] ?? '';
 $file_deadline = $settings['file_deadline'] ?? '';
 
+// STUDENT COMPLIANCE PROGRESS
 
+$success_rate = "SELECT COUNT(DISTINCT document_type) AS approved_documents
+                 FROM documents WHERE user_id = ? AND status = 'Approved'";
+$stmt_success = $conn->prepare($success_rate);
+$stmt_success->bind_param("i", $userID);
+$stmt_success->execute();
+
+$approved_docs = $stmt_success->get_result()->fetch_assoc();
+
+$approved_docs_data = min(3, (int)($approved_docs['approved_documents'] ?? 0));
+$scholar_approved_data = (int)($scholarStatus === 'active');
+
+// PROGRESS RATE
+$successive_data = $approved_docs_data + $scholar_approved_data;
+$final_compliance_rate = ($successive_data / 4) * 100;
 
 ?>
 
@@ -157,13 +172,29 @@ $file_deadline = $settings['file_deadline'] ?? '';
                                 ?>
                             <div class="document">
                                 <h5 class="document-header"> <?php echo htmlspecialchars($doc['document_type']); ?></h5>
-                                <span class="stamp stamp-successdocument-status">APPROVED</span>
+                                <span class="stamp stamp-<?php echo $badge_status; ?> document-status"><?php echo htmlspecialchars($doc['status']);?></span>
                             </div>
                             <?php endwhile; ?>
                         <?php endif; ?>
                         </div>
                     </div>
                     <span>Uploaded document report needed for Scholarship Application</span>
+
+                    <div class="compliance-panel mt-2">
+                        <span class="dashboard-eyebrow fs-5">Compliance Rate Report</span>
+
+                        <div class="p-2">
+                            <div class="progress-header d-flex flex-row justify-content-between">
+                                <h6 class="fw-bold">Overall Compliance Rating</h6>
+                                <span class="fw-bold"><?php echo $final_compliance_rate;?>%</span>
+                            </div>
+                            <div class="progress compliance-progress">
+                                <div class="progress-bar bg-dark" role="progressbar" style="width: <?php echo $final_compliance_rate; ?>%" aria-valuenow="<?php echo $final_compliance_rate;?>" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                           <span class="text-muted small fw-bold fst-italic">Submit documents and follow up your data to improve compliance rate.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -206,6 +237,22 @@ $file_deadline = $settings['file_deadline'] ?? '';
                             <div class="event-setings">
                                 <h6 class="">File deadline</h6>
                                 <span><?php echo htmlspecialchars($file_deadline); ?></span>
+                            </div>
+                        </div>
+
+                        <div class="application-container-cta mt-3">
+                            <div class="application-cta px-4">
+                                <div class="cta-header">
+                                    <span>Application Card</span>
+                                </div>
+                                <div class="cta-hero mt-1">
+                                    <h5>Apply Here</h5>
+                                    <span class="apply-btn">
+                                        <a href="/TVAM_SCHOLARSHIP/student/upload-documents.php" aria-label="Apply now">
+                                            <i class="bi bi-arrow-down-right-circle-fill"></i>
+                                        </a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
