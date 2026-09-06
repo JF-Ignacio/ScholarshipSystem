@@ -4,6 +4,14 @@ TVAM Scholarship Management System is a PHP and MySQL web application for managi
 
 This project has grown beyond simple CRUD practice. It now has real software workflow concepts: authentication, authorization, protected routes, student submissions, admin review, file handling, audit logs, and early API structure.
 
+## SECURITY FEATURES
+Security Features included are Layered authentication, Role-based Access Control, Authentication and Password Hashing, Password Reset Tokens, SQL Injection Protection, File Upload Validation, Protected Document Downloads (MIME types), Transaction Handling, Input Validation and Output Escaping, Centralized Route Guards, and SQL Prepared Statements. 
+
+
+### LIBRARY INCLUDED 
+- PHPMailer
+- Chart.js (Soon to apply)
+
 ## Current Status
 
 Estimated project completion: 80-85% for a capstone-level scholarship management system.
