@@ -97,7 +97,6 @@ $application = $settings['application_deadline'] ?? '';
 $file = $settings['file_deadline'] ?? '';
 
 
-
 ?>
 
 <!DOCTYPE html>

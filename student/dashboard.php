@@ -5,6 +5,7 @@ include "../config/database.php";
 $id = (int) ($_SESSION['id'] ?? 0);
 $bg = "";
 $color = "";
+$message = "";
 
 // CONVERT RAW ID - STUDENT_ID FROM SCHOLARS
 $studentID = "TVAM-" .sprintf("%06d", $id);
@@ -43,11 +44,24 @@ $total_documents = $document_result->num_rows;
 
 $document_pipeline = min(100, round(($total_documents / 3) * 100));
 
-$type_meta = [
-    'Certificate of Enrollment' => ['code' => 'COE', 'class' => 'tab-coe'],
-    'Grade Transcript'          => ['code' => 'GT',  'class' => 'tab-gt'],
-    'Disbursement Record'       => ['code' => 'DOR', 'class' => 'tab-dor'],
-];
+// EVENT SETTINGS
+$settings = [];
+$key = [];
+
+$event_sql = "SELECT settings_key, settings_value FROM settings";
+$event_stmt = $conn->query($event_sql);
+
+if($event_stmt) {
+    while($row = $event_stmt->fetch_assoc()) {
+        $settings[$row['settings_key']] = $row['settings_value'];
+    }
+}
+
+$scholarship_deadline = $settings['scholarship_status'] ?? '';
+$application_deadline = $settings['application_deadline'] ?? '';
+$file_deadline = $settings['file_deadline'] ?? '';
+
+
 
 ?>
 
@@ -118,7 +132,7 @@ $type_meta = [
             </div>
         </section>
 
-        <section class="row px-1 mt-4">
+        <section class="row g-4 mt-1">
             <div class="col-12 col-xl-8">
                 <div class="document-panel h-100">
                     <div class="document-report-header">
@@ -164,14 +178,36 @@ $type_meta = [
                     
                     <div class="application-data d-flex flex-row justify-content-between mt-3">
                         <h5 class="text-muted">Documents</h5>
-                        <span class="progress-data mb-2"><strong>2</strong></span>
+                        <span class="progress-data mb-2"><strong><?php echo $total_documents; ?></strong></span>
                     </div>
                     <div class="progress application-progress">
-                        <div class="progress-bar bg-dark" role="progressbar" style="width: <?php echo $document_pipeline; ?>;" aria-valuenow="2%" aria-valuemin="0%" aria-valuemax="3%"></div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: <?php echo $document_pipeline; ?>%;" aria-valuenow="<?php echo $document_pipeline; ?>" aria-valuemin="0" aria-valuemax="100">
+                            <?php if($total_documents == 3) { $message = "COMPLETED"; } 
+                                else if($total_documents <= 2 && $total_documents > 0) {$message = "INCOMPLETE DOCUMENTS"; }
+                            ?>
+                                <span class="p-3 text-center"> <?php echo $message; ?></span>
+                        </div>
                     </div>
 
                     <div class="event-status mt-3">
                         <h5 class="text-muted text-uppercase small ">EVENT STATUS</h5>
+
+                        <div class="event-container mt-3 d-flex flex-md-row text-center gap-3">
+                            <div class="event-setings">
+                                <h6 class="">Application deadline</h6>
+                                <span><?php echo htmlspecialchars($application_deadline); ?></span>
+                            </div>
+
+                            <div class="event-setings">
+                                <h6 class="">Scholarship deadline</h6>
+                                <span><?php echo htmlspecialchars($scholarship_deadline); ?></span>
+                            </div>
+
+                            <div class="event-setings">
+                                <h6 class="">File deadline</h6>
+                                <span><?php echo htmlspecialchars($file_deadline); ?></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

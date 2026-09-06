@@ -180,3 +180,10 @@
     background-color: rgba(142, 209, 142, 0.742);
     padding: 10px;
 }
+
+.event-setings {
+    border: 1px solid rgba(229, 213, 213, 0.675);
+    padding: clamp(0.7rem, 3vw, 0.8rem);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(213, 208, 208, 0.764);
+}
