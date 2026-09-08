@@ -180,19 +180,19 @@ $final_compliance_rate = ($successive_data / 4) * 100;
                     </div>
                     <span>Uploaded document report needed for Scholarship Application</span>
 
-                    <div class="compliance-panel mt-2">
-                        <span class="dashboard-eyebrow fs-5">Compliance Rate Report</span>
+                    <div class="compliance-panel mt-4">
+                        <span class="fw-bold fs-5">Compliance Rate Report</span>
 
                         <div class="p-2">
                             <div class="progress-header d-flex flex-row justify-content-between">
-                                <h6 class="fw-bold">Overall Compliance Rating</h6>
+                                <h6 class="fw-bold text-muted">Overall Compliance Rating</h6>
                                 <span class="fw-bold"><?php echo $final_compliance_rate;?>%</span>
                             </div>
                             <div class="progress compliance-progress">
                                 <div class="progress-bar bg-dark" role="progressbar" style="width: <?php echo $final_compliance_rate; ?>%" aria-valuenow="<?php echo $final_compliance_rate;?>" aria-valuemin="0" aria-valuemax="100">
                                 </div>
                             </div>
-                           <span class="text-muted small fw-bold fst-italic">Submit documents and follow up your data to improve compliance rate.</span>
+                           <span class="text-muted small fst-italic">Submit documents and follow up your data to improve compliance rate.</span>
                         </div>
                     </div>
                 </div>
@@ -260,7 +260,47 @@ $final_compliance_rate = ($successive_data / 4) * 100;
             </div>
         </section>
 
-        <section class="student-easy-access">
+        <section class="student-easy-access row g-4 mt-1">
+            <div class="col-12 col-lg-8">
+                <div class="student-cards-quick card h-100 p-4">
+                    <h5 class="dashboard-eyebrow">QUICK ACTIONS</h5>
+
+                    <div class="easy-card-heading mb-0">
+                        <h5 class="easy-access-head fw-bold">EASY-ACCESS CARDS</h5>
+                    </div>
+
+                    <div class="easy-access-card mt-3">
+                        <a href="#" class="card-cta">
+                            <h5 class="cta-eyebrow mb-0">Disbursement</h5>
+                            <span class="small text-muted">See scholar allowance and payouts</span>
+                        </a>
+                        <a href="#"class="card-cta">
+                            <h5 class="cta-eyebrow mb-0">Notifications</h5>
+                            <span class="card-cta-span small text-muted">See profile notifications</span>
+                                </a>
+                        <a href="#" class="card-cta ">
+                            <h5 class="cta-eyebrow mb-0">Profile</h5>
+                            <span class="small text-muted">Manage profile information</span>
+                        </a>
+                        <a href="#"class="card-cta ">
+                            <h5 class="cta-eyebrow mb-0">Settings</h5>
+                            <span class="small text-muted">Customize settings and theme</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4">
+                <div class="student-cards-quick card p-3">
+                    <div class="remainders-heading">
+                        <h6 class="text-muted fw-bold">All upcoming events</h6>
+                    </div>
+
+                    <div>
+                        <p>None</p>
+                    </div>
+                </div>
+            </div>
 
         </section>
     </main>
