@@ -79,7 +79,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href="#scholar-info" class="btn-apply btn rounded-4 fw-bold fs-4">Scholarship Information</a>
             </div>
 
-            <div class="col-12 col-lg-4 p-3 d-flex flex-column border rounded-3 shadow-sm">
+            <div class="col-12 col-lg-4 p-3 d-flex flex-column border rounded-3 shadow-sm bg-white">
                 <form action="apply.php" method="POST" class="p-2 d-flex flex-column">
                     <?php if (!empty($message)) : ?>
                         <div class="alert <?php echo $alert?>" role="alert">
@@ -164,7 +164,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row g-4 justify-content-center">
                 
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-3">
+                    <div class="apply-card card h-100 border-0 shadow-sm rounded-3">
                         <div class="card-header bg-white border-0 pt-4 text-center">
                             <img src="/TVAM_SCHOLARSHIP/assets/images/tesdalogo.png" alt="TESDA Logo" class="scholar-logo img-fluid rounded-circle shadow-inner p-sm-3">
                         </div>
@@ -189,7 +189,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-3">
+                    <div class="apply-card card h-100 border-0 shadow-sm rounded-3">
                         <div class="card-header bg-white border-0 pt-4 text-center">
                             <img src="/TVAM_SCHOLARSHIP/assets/images/dostlogo.png" alt="DOST Logo" class="scholar-logo img-fluid rounded-circle">
                         </div>
@@ -214,7 +214,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
 
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 border-0 shadow-sm rounded-3">
+                    <div class="apply-card card h-100 border-0 shadow-sm rounded-3">
                         <div class="card-header bg-white border-0 pt-4 text-center">
                             <img src="/TVAM_SCHOLARSHIP/assets/images/dswdlogo.png" alt="DSWD Logo" class="scholar-logo img-fluid rounded-circle">
                         </div>

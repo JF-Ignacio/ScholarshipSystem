@@ -223,7 +223,7 @@ $final_compliance_rate = ($successive_data / 4) * 100;
                     <div class="event-status mt-3">
                         <h5 class="text-muted text-uppercase small ">EVENT STATUS</h5>
 
-                        <div class="event-container mt-3 d-flex flex-md-row text-center gap-3">
+                        <div class="event-container text-center">
                             <div class="event-setings">
                                 <h6 class="">Application deadline</h6>
                                 <span><?php echo htmlspecialchars($application_deadline); ?></span>
@@ -240,7 +240,7 @@ $final_compliance_rate = ($successive_data / 4) * 100;
                             </div>
                         </div>
 
-                        <div class="application-container-cta mt-3">
+                        <div class="application-container-cta mt-4">
                             <div class="application-cta px-4">
                                 <div class="cta-header">
                                     <span>Application Card</span>
