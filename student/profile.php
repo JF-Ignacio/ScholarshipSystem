@@ -3,7 +3,35 @@
 include "../config/database.php";
 require_once "../config/student-auth.php";
 
-$fullname = $_SESSION['fullname'] ?? "Student";
+$id = $_SESSION['id'] ?? 0;
+$fullname = $_SESSION['fullname'] ?? "-";
+$message = "";
+$badge = "";
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_picture'])) {
+
+    $result = ProfileUpload($conn, $id, $_FILES['file_picture']);
+
+    $_SESSION['flash_message'] = $result['message'];
+    $_SESSION['flash_badge'] = $result['success'] ? 'success' : 'danger';
+
+    header("Location: profile.php");
+    exit();
+}
+
+$stmt = $pdo->prepare("SELECT profile_image FROM user_profiles WHERE user_id = ?");
+$stmt->execute([$id]);
+$profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$profileImage = $profile['profile_image'] ?? null;
+$avatarSrc = $profileImage
+    ? "/TVAM_SCHOLARSHIP/assets/uploads/profile-pictures/" . htmlspecialchars($profileImage)
+    : "/TVAM_SCHOLARSHIP/assets/images/TVAMLOGO.png";
+
+// --- Pull flash message, then clear it (one-time display) ---
+$message = $_SESSION['flash_message'] ?? "";
+$badge = $_SESSION['flash_badge'] ?? "";
+unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
 
 ?>
 
@@ -15,78 +43,61 @@ $fullname = $_SESSION['fullname'] ?? "Student";
     <title>Student Profile</title>
      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/style.css">
+    <link rel="stylesheet" href="/TVAM_SCHOLARSHIP/assets/css/student.css">
     <link rel="icon" href="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png">
 </head>
 
 <body class="student-layout">
     <?php include "../includes/sidebar-student.php";?>
 
-    <div class="container-fluid">
-        <div class="row">
-            <aside class="d-none">
-                <div class="w-100 d-flex flex-column p-3 gap-3 px-4 ">
-                    <div class="row d-flex">
-                        <div class="col-md-4 col-lg-4 col-sm-2">
-                            <img src="/TVAM_SCHOLARSHIP/assets/images/samplePicture.jpg" alt="" class="img-fluid rounded-circle">
-                        </div>
-                        <div class="col-md-8 col-lg-8 px-4 text-left d-flex flex-column">
-                            <h1>Rai Senal</h1>
-                            <span>COMRPO</span>
-                            <a href="../auth/logout.php" class="text-decoration-none btn btn-danger btn-outline-secondary border-0 text-light mt-3 w-50 ">Logout</a>
+    <div class="profile-container container-fluid d-flex flex-column p-4">
+        <section class="profile-header-card">
+            <div class="row mb-0 g-2">
+                <div class="col-4 col-lg-4">
+                    <div class="profile-card card gap-3 h-100">
+                        <?php if($message) : ?>
+                            <div class="alert alert-<?php echo htmlspecialchars($badge); ?>">
+                                <?php echo htmlspecialchars($message); ?>
+                            </div>
+                        <?php endif; ?>
+                        <form action="" method="POST" enctype="multipart/form-data" id="profile_form">
+                            <div class="avatar-wrapper">
+                                <label for="filePicture" class="avatar-label form-label" >
+                                    <img 
+                                        src="<?php echo $avatarSrc; ?>" 
+                                        alt="Profile Picture"
+                                        class="avatar-img img-fluid"
+                                        id="avatarPreview"
+                                    >
+                                        
+                                    <div class="avatar-overlay">
+                                        <i class="bi bi-camera-fill"></i>
+                                    </div>
+                                </label>
+                                <input type="file" name="file_picture" id="filePicture" accept="image/png, image/jpeg, image/webp" hidden>
+                            </div>
+                        </form>
+
+                        <div class="profile-name">
+                            <h4 class="fw-bold"><?php echo htmlspecialchars($fullname); ?></h4>
+                            <span>Personalized your profile wall</span>
                         </div>
                     </div>
-                    <hr class="border w-100">
                 </div>
 
-                <div class="w-100 d-flex flex-column">
-                    <ul class="nav flex-column gap-4 p-4 text-light">
-                        <li class="nav-item">
-                            <a href="" class="text-decoration-none fs-6 btn btn-outline-light border-0  w-100 text-start py-2 px-4 rounded-3"> 🪪 Manage Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="" class="text-decoration-none fs-6 btn btn-outline-light border-0  w-100 text-start py-2 px-4 rounded-3"> 👨‍🎓 Apply as Scholar</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="" class="text-decoration-none fs-6 btn btn-outline-light border-0  w-100 text-start py-2 px-4 rounded-3"> 💸 See Stipend Balance</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="" class="text-decoration-none fs-6 btn btn-outline-light border-0  w-100   text-start py-2 px-4 rounded-3">🔑 Change Password</a>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
-
-            <main class="col-12 min-vh-100 p-5 px-4 py-5 bg-light">
-                    <div class="container-fluid d-flex flex-column gap-3 px-4">
-                        <div class="profile-main-card card w-50 p-3 rounde-2 shadow-lg">
-                            <div class="card-body ">
-                                <h2>Welcome, <?php echo htmlspecialchars($fullname); ?>!</h2>
-                            </div>
-                        </div>
-
-                        <div class="row d-flex flex-column border mt-4 gap-3">
-                            <div class="card col-md-12 col-lg-12 border">
-                                <div class="card-body">
-                                    <h1>About me</h1>
-                                </div>
-                            </div>
-
-                            <div class=" card col-md-12 col-lg-12 border">
-                                <div class="card-body">
-                                    <h1>Why I choose this course?</h1>
-                                    <p></p>
-                                </div>
-                            </div>
-                            
-                        </div>
+                <div class="col-8 col-lg-8">
+                    <div class="profile-college card p-4 h-100">
+                        <h4 class="text-uppercase fw-bold">College of Industrial Education</h4>
+                        <span class="college-section">COMPRO</span>
+                        <span>Batch 2024 - 2028</span>
                     </div>
-                </main>
-        </div>
+                </div>
+            </div>
+        </section>
     </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/TVAM_SCHOLARSHIP/assets/js/student.js"></script>
 
 </body>
 </html>

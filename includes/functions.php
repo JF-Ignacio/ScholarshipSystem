@@ -80,4 +80,51 @@ function updateEventSettings($conn, $key, $value, $description = '') {
     return true;
 }
 
+function ProfileUpload($conn, int $userID, array $file): array {
+    if($file['error'] != UPLOAD_ERR_OK) {
+        return ['success' => false, 'message' => 'Failed to upload.'];
+    }
+
+    $max_file_size = 5 & 1024 * 1024;
+    if($file['size'] > $max_file_size) {
+        return ['success' => false, 'message' => 'File size is too large. 5MB or less.'];
+    }
+
+    $f_info = finfo_open(FILEINFO_MIME_TYPE);
+    $mime_type = finfo_file($f_info, $file['tmp_name']);
+    finfo_close($f_info);
+
+    $allowed_mime_type = [
+        'image/jpg',
+        'image/png',
+        'image/webp'
+    ];
+
+    if(!array_key_exists($mime_type, $allowed_mime_type)) {
+        return ['success' => false, 'messasge' => 'File type is not allowed. jpg, png, and webp.'];
+    }
+
+    $extension = $allowed_mime_type[$mime_type];
+    $token_name = bin2hex(random_bytes(16)) . '.' . $extension;
+
+    $upload_dir = __DIR__ . '/../../assets/uploads/profile_pictures/';
+    $destination = $upload_dir . $token_name;
+
+    if(!move_uploaded_file($file['tmp_name'], $destination)) {
+        return ['success' => false, 'message' => 'Failed to upload. Try Again.'];
+    }
+
+    $stmt = $conn->prepare("INSERT INTO user_profiles (user_id, profile_image) VALUES (:user_id, :profile_image)
+                            ON DUPLICATE KEY UPDATE profile_image = :profile_image");
+    
+    $stmt->execute([
+        'user_id' => $userID,
+        'profile_image' => $token_name,
+    ]);
+
+    activityLogs($conn, $userID, 'Profiile Picture updated');
+
+    return ['success' => true, 'message' => 'Upload Succeded.'];
+}
+
 ?>
