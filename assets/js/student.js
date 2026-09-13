@@ -1,10 +1,10 @@
 
-document.getElementById('file_picture').addEventListener('change', function(e) {
+document.getElementById('filePicture').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
     // Optional: quick client-side size check (server MUST still validate this)
-    const maxSizeMB = 2;
+    const maxSizeMB = 5;
     if (file.size > maxSizeMB * 1024 * 1024) {
         alert(`File too large. Max size is ${maxSizeMB}MB.`);
         this.value = ""; // reset input

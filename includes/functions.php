@@ -1,6 +1,6 @@
 <?php 
 
-include "../../config/database.php";
+include "../config/database.php";
 /**
  * * @param mysqli $conn 
  * 
@@ -85,7 +85,7 @@ function ProfileUpload($conn, int $userID, array $file): array {
         return ['success' => false, 'message' => 'Failed to upload.'];
     }
 
-    $max_file_size = 5 & 1024 * 1024;
+    $max_file_size = 5 * 1024 * 1024;
     if($file['size'] > $max_file_size) {
         return ['success' => false, 'message' => 'File size is too large. 5MB or less.'];
     }
@@ -95,9 +95,9 @@ function ProfileUpload($conn, int $userID, array $file): array {
     finfo_close($f_info);
 
     $allowed_mime_type = [
-        'image/jpg',
-        'image/png',
-        'image/webp'
+        'image/jpeg' => 'jpg',
+        'image/png' => 'png',
+        'image/webp' => 'webp',
     ];
 
     if(!array_key_exists($mime_type, $allowed_mime_type)) {
@@ -107,23 +107,32 @@ function ProfileUpload($conn, int $userID, array $file): array {
     $extension = $allowed_mime_type[$mime_type];
     $token_name = bin2hex(random_bytes(16)) . '.' . $extension;
 
-    $upload_dir = __DIR__ . '/../../assets/uploads/profile_pictures/';
+    $upload_dir = __DIR__ . '/../assets/uploads/profile-pictures/';
     $destination = $upload_dir . $token_name;
 
     if(!move_uploaded_file($file['tmp_name'], $destination)) {
         return ['success' => false, 'message' => 'Failed to upload. Try Again.'];
     }
 
-    $stmt = $conn->prepare("INSERT INTO user_profiles (user_id, profile_image) VALUES (:user_id, :profile_image)
-                            ON DUPLICATE KEY UPDATE profile_image = :profile_image");
-    
-    $stmt->execute([
-        'user_id' => $userID,
-        'profile_image' => $token_name,
-    ]);
+    $sql = "INSERT INTO user_profiles (profile_id, profile_image) VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE profile_image = ?";
+    $stmt = $conn->prepare($sql);
+
+    if(!$stmt) {
+        @unlink($destination);
+        return ['success' => false, 'message' => 'Upload Failed. Try again or Contact admin.'];
+    }
+
+    $stmt->bind_param("iss", $userID, $token_name, $token_name);
+    $stmt_success = $stmt->execute();
+    $stmt->close();
+
+    if(!$stmt_success) {
+        @unlink($destination);
+        return ['success' => false, 'message' => 'DB error: ' . $stmt->error];
+    }
 
     activityLogs($conn, $userID, 'Profiile Picture updated');
-
     return ['success' => true, 'message' => 'Upload Succeded.'];
 }
 
