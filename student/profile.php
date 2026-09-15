@@ -39,6 +39,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['description'])) {
     $_SESSION['flash_badge'] = $textResult['success'] ? 'success' : 'danger';
 }
 
+// DELETE DESCRIPTION HANDLER
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_description'])) {
+    $sql_delete = "UPDATE user_profiles SET description = NULL WHERE profile_id = ?";
+    $stmt_del = $conn->prepare($sql_delete);
+
+    if(!$stmt_del) {
+        $_SESSION['flash_message'] = 'Diary entry removed successfully.';
+        $_SESSION['flash_badge'] = 'warning';
+    }
+
+    $stmt_del->bind_param("i", $id);
+    
+    if ($stmt_del->execute()) {
+        $_SESSION['flash_message'] = 'Diary entry removed successfully.';
+        $_SESSION['flash_badge'] = 'warning';
+    } else {
+        $_SESSION['flash_message'] = 'Failed to remove entry.';
+        $_SESSION['flash_badge'] = 'danger';
+    }
+
+    header("Location: profile.php");
+    exit();
+}
+
 $sql = "SELECT profile_image, description FROM user_profiles WHERE profile_id = ?";
 $stmt_upload = $conn->prepare($sql);
 $stmt_upload->bind_param("i", $id);
@@ -128,11 +152,16 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
         <section class="description-section w-100 mt-3 p-2">
             <div class="description-text card p-4 px-5">
                 <h5 class="fw-bold text-uppercase fs-3">SCHOLARSHIP DIARY JOURNEY</h5>
-                <div class="text-message bordered-dark p-3">
+                <div class="text-message p-4 shadow-sm">
                     <span><?php echo htmlspecialchars($textSelect); ?></span>
                 </div>
                 <div class="btn-text">
-                    <button type="button" id="add_description" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bioModal">ADD</button>
+                    <?php if(!empty($textSelect)) :?>
+                        <form action="" method="POST" onsubmit="return confirm('Do you want to delete this description?');">
+                            <button type="submit" name="delete_description" class="btn btn-outline-warning rounded-3 border">CLEAR</button>
+                        </form>
+                    <?php endif; ?>
+                    <button type="button" id="add_description" class="btn btn-success rounded-3" data-bs-toggle="modal" data-bs-target="#bioModal">ADD</button>
                 </div>
             </div>
 
@@ -164,6 +193,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
+                                    <button type="buttom" class="btn btn-outline-warning rounded-3 text-dark" id="clearText">Clear</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
                                     <button type="submit" name="description_submit" class="btn btn-success rounded-3 px-4 fw-semibold">SUBMIT</button>
                                 </div>
@@ -178,6 +208,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
         document.addEventListener('DOMContentLoaded', () => {
             const textarea = document.getElementById('studentDescription');
             const charCount = document.getElementById('characters');
+            const clearBtn = document.getElementById('clearText');
             const maxChar = 1000;
 
             const updateCount = () => {
@@ -193,6 +224,14 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
             };
 
             textarea.addEventListener('input', updateCount);
+
+            if(clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    textarea.value = "";
+                    updateCount();
+                    textarea.focus();
+                });
+            }
 
             updateCount();
         });
