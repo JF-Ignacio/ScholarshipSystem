@@ -8,6 +8,7 @@ $id = $_SESSION['id'] ?? 0;
 $fullname = $_SESSION['fullname'] ?? " ";
 $message = "";
 $badge = "";
+$hasDescription = false;
 
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_picture'])) {
 
@@ -20,7 +21,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_picture'])) {
     exit();
 }
 
-$sql = "SELECT profile_image FROM user_profiles WHERE profile_id = ?";
+
+
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['description'])) {
+    $text = trim($_POST['description'] ?? '');
+
+    if(empty($text)) {
+        $_SESSION['flash_message'] = 'Avoid Empty Fields.';
+        $_SESSION['flash_badge'] = 'danger';
+
+        header("Location: profile.php");
+        exit();
+    }
+    
+    $textResult = CreateDescription($conn, $id, $text);
+    $_SESSION['flash_message'] = $textResult['message'];
+    $_SESSION['flash_badge'] = $textResult['success'] ? 'success' : 'danger';
+}
+
+$sql = "SELECT profile_image, description FROM user_profiles WHERE profile_id = ?";
 $stmt_upload = $conn->prepare($sql);
 $stmt_upload->bind_param("i", $id);
 $stmt_upload->execute();
@@ -29,6 +48,7 @@ $upload_result = $stmt_upload->get_result();
 $fetch_profile = $upload_result->fetch_assoc();
 
 $profileImage = $fetch_profile['profile_image'] ?? null;
+$textSelect = $fetch_profile['description'] ?? null;
 
 
 $avatarSrc = $profileImage  
@@ -38,7 +58,6 @@ $avatarSrc = $profileImage
 $message = $_SESSION['flash_message'] ?? "";
 $badge = $_SESSION['flash_badge'] ?? "";
 unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
-
 
 ?>
 
@@ -59,16 +78,17 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
 
     <div class="profile-container container-fluid d-flex flex-column p-4">
         <section class="profile-header-card">
+            <?php if($message) : ?>
+                <div class="alert alert-<?php echo htmlspecialchars($badge); ?>">
+                    <span>
+                        <?php echo htmlspecialchars($message); ?>
+                    </span>
+                </div>
+            <?php endif; ?>
+
             <div class="row mb-0 g-2">
                 <div class="col-4 col-lg-4">
                     <div class="profile-card card gap-3 h-100">
-                        <?php if($message) : ?>
-                            <div class="alert alert-<?php echo htmlspecialchars($badge); ?>">
-                                <span>
-                                    <?php echo htmlspecialchars($message); ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
 
                         <form action="" method="POST" enctype="multipart/form-data" id="profile_form">
                             <div class="avatar-wrapper">
@@ -104,7 +124,79 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                 </div>
             </div>
         </section>
+
+        <section class="description-section w-100 mt-3 p-2">
+            <div class="description-text card p-4 px-5">
+                <h5 class="fw-bold text-uppercase fs-3">SCHOLARSHIP DIARY JOURNEY</h5>
+                <div class="text-message bordered-dark p-3">
+                    <span><?php echo htmlspecialchars($textSelect); ?></span>
+                </div>
+                <div class="btn-text">
+                    <button type="button" id="add_description" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bioModal">ADD</button>
+                </div>
+            </div>
+
+            <div class="modal fade" id="bioModal" tabindex="-1" aria-labelledby="bioModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content description-card border-0 rounded-4 shadow-lg overflow-hidden">
+
+                        <form action="" method="POST" class="p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-uppercase mb-0" id="bioModalLabel">Short Auto-Bio</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="main-text d-flex flex-column gap-3">
+                                <div>
+                                    <label for="studentDescription" class="form-label text-muted small fw-semibold">DESCRIBE YOURSELF</label>
+                                    <textarea 
+                                        name="description" 
+                                        id="studentDescription"
+                                        class="form-control"
+                                        rows="5"
+                                        maxlength="1000"
+                                        placeholder="Type message here..."></textarea>
+                                    <div class="counter d-flex justify-content-end mt-1">
+                                        <small class="text-muted">
+                                            <span class="charcount" id="characters">0</span>/1000
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-end gap-2">
+                                    <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" name="description_submit" class="btn btn-success rounded-3 px-4 fw-semibold">SUBMIT</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.getElementById('studentDescription');
+            const charCount = document.getElementById('characters');
+            const maxChar = 1000;
+
+            const updateCount = () => {
+                const currentLength = textarea.value.length;
+                charCount.textContent = currentLength;
+
+                if(currentLength >= maxChar) {
+                    charCount.classList.add('text-danger', 'fw-bold');
+                }
+                else {
+                    charCount.classList.remove('text-danger', 'fw-bold');
+                }
+            };
+
+            textarea.addEventListener('input', updateCount);
+
+            updateCount();
+        });
+    </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/TVAM_SCHOLARSHIP/assets/js/student.js"></script>

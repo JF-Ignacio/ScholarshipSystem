@@ -136,4 +136,24 @@ function ProfileUpload($conn, int $userID, array $file): array {
     return ['success' => true, 'message' => 'Upload Succeded.'];
 }
 
+function CreateDescription($conn, int $userID, $description) {
+    $sql = "INSERT INTO user_profiles (profile_id, description) VALUES (?, ?)
+            ON DUPLICATE KEY UPDATE description = ?";
+    $stmt_description = $conn->prepare($sql);
+
+    if(!$stmt_description) {
+        return ['success' => false, 'message' => 'Update failed. Try again'];
+    }
+
+    $stmt_description->bind_param("iss", $userID, $description, $description);
+    $stmt_success = $stmt_description->execute();
+    $stmt_description->close();
+
+    if(!$stmt_success) {
+        return ['success' => false, 'message' => 'Upload failed. Try again.'];
+    }
+
+    activityLogs($conn, $userID, 'Profile Description added.');
+    return ['success' => true, 'message' => 'Description Added'];
+}
 ?>
