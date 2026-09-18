@@ -21,8 +21,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['file_picture'])) {
     exit();
 }
 
-
-
 if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['description'])) {
     $text = trim($_POST['description'] ?? '');
 
@@ -45,15 +43,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_description'])
     $stmt_del = $conn->prepare($sql_delete);
 
     if(!$stmt_del) {
-        $_SESSION['flash_message'] = 'Diary entry removed successfully.';
+        $_SESSION['flash_message'] = 'Failed to remove the entry. Try again.';
         $_SESSION['flash_badge'] = 'warning';
+
+        header("Location: profile.php");
+        exit();
     }
 
     $stmt_del->bind_param("i", $id);
-    
+
     if ($stmt_del->execute()) {
         $_SESSION['flash_message'] = 'Diary entry removed successfully.';
-        $_SESSION['flash_badge'] = 'warning';
+        $_SESSION['flash_badge'] = 'success';
     } else {
         $_SESSION['flash_message'] = 'Failed to remove entry.';
         $_SESSION['flash_badge'] = 'danger';
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_description'])
 
     header("Location: profile.php");
     exit();
+    
 }
 
 $sql = "SELECT profile_image, description FROM user_profiles WHERE profile_id = ?";
@@ -111,7 +113,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
             <?php endif; ?>
 
             <div class="row mb-0 g-2">
-                <div class="col-4 col-lg-4">
+                <div class="col-12 col-lg-4">
                     <div class="profile-card card gap-3 h-100">
 
                         <form action="" method="POST" enctype="multipart/form-data" id="profile_form">
@@ -139,7 +141,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                     </div>
                 </div>
 
-                <div class="col-8 col-lg-8">
+                <div class="col-12 col-lg-8">
                     <div class="profile-college card p-4 h-100">
                         <h4 class="text-uppercase fw-bold">College of Industrial Education</h4>
                         <span class="college-section">COMPRO</span>
@@ -184,7 +186,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                                         class="form-control"
                                         rows="5"
                                         maxlength="1000"
-                                        placeholder="Type message here..."></textarea>
+                                        placeholder="Type message here..."><?php echo htmlspecialchars($textSelect); ?></textarea>
                                     <div class="counter d-flex justify-content-end mt-1">
                                         <small class="text-muted">
                                             <span class="charcount" id="characters">0</span>/1000
@@ -193,7 +195,7 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                                 </div>
 
                                 <div class="d-flex justify-content-end gap-2">
-                                    <button type="buttom" class="btn btn-outline-warning rounded-3 text-dark" id="clearText">Clear</button>
+                                    <button type="button" class="btn btn-outline-warning rounded-3 text-dark" id="clearText">Clear</button>
                                     <button type="button" class="btn btn-outline-secondary rounded-3" data-bs-dismiss="modal">Cancel</button>
                                     <button type="submit" name="description_submit" class="btn btn-success rounded-3 px-4 fw-semibold">SUBMIT</button>
                                 </div>
@@ -203,6 +205,69 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                 </div>
             </div>
         </section>
+
+        <!--PROFILE MANAGEMENT = CHANGING NAME AND PASSWORD -->
+        <section class="manage-profile-cards row g-2 mt-2">
+
+            <div class="col-12 col-lg-8 w-100">
+                <div class="profile-settings card h-100 shadow-sm border-0 p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex flex-column">
+                            <h5 class="profile-eyebrow fw-bold text-uppercase">Personal Information:</h5>
+                            <span class="info-span fw-bold text-muted small">Full Name: </span>
+                            <span class="info-span">Email: </span>
+                            <span class="info-span">Contact Number: </span>
+                            <span class="info-span">Birthdate: </span>
+                        </div>
+                        <button class="btn btn-outline-primary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4 w-100">
+                <div class="profile-settings card h-100 shadow-sm border-0">
+                    dasd
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-4 w-100">
+                <div class="profile-settings card h-100 shadow-sm border-0">
+                </div>
+            </div>
+        </section>
+
+        <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+                    <form action="actions/change-password.php" method="POST">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title fw-bold">CHANGE PASSWORD</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column gap-3">
+                            <div>
+                                <label class="form-label small fw-semibold">Current Password</label>
+                                <input type="password" name="current_password" class="form-control" required>
+                            </div>
+                            <div>
+                                <label class="form-label small fw-semibold">New Password</label>
+                                <input type="password" name="new_password" class="form-control" minlength="8" required>
+                            </div>
+                            <div>
+                                <label class="form-label small fw-semibold">Confirm New Password</label>
+                                <input type="password" name="confirm_password" class="form-control" minlength="8" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" name="change_password" class="btn btn-primary px-4">Update Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
