@@ -1,11 +1,10 @@
 <?php 
 
-include "../config/database.php";
-include "../includes/functions.php";
+require_once "../config/database.php";
+require_once "../includes/functions.php";
 require_once "../config/student-auth.php";
 
 $id = $_SESSION['id'] ?? 0;
-$fullname = $_SESSION['fullname'] ?? " ";
 $message = "";
 $badge = "";
 $hasDescription = false;
@@ -85,6 +84,26 @@ $message = $_SESSION['flash_message'] ?? "";
 $badge = $_SESSION['flash_badge'] ?? "";
 unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
 
+// $id = $_session
+// DYNAMIC STORING OF INFO
+$stmt_information = $conn->prepare("SELECT u.id, u.fullname, u.email,
+                                    s.student_id, s.user_id, s.fullname, s.scholarship_type, s.course, s.year_level
+                                    FROM users u
+                                    LEFT JOIN scholars s ON s.user_id = ?
+                                    WHERE u.id = ?
+                                    LIMIT 1");
+if(!$stmt_information) {
+    $_SESSION['flash_message'] = "Failed to retrieve data. Contact Admin";
+    $_SESSION['flash_badge'] = "danger";
+    header("Location: profile.php");
+    exit();
+}
+
+$stmt_information->bind_param("ii", $id, $id);
+$stmt_information->execute();
+$studentData = $stmt_information->get_result()->fetch_assoc();
+
+$fullname = $studentData['fullname'] ?? ($_SESSION['fullname'] ?? 'TVAM Student'); 
 ?>
 
 <!DOCTYPE html>
@@ -210,14 +229,16 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
         <section class="manage-profile-cards row g-2 mt-2">
 
             <div class="col-12 col-lg-8 w-100">
-                <div class="profile-settings card h-100 shadow-sm border-0 p-4">
+                <div class="profile-settings card h-100 shadow-sm border-0 p-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
-                            <h5 class="profile-eyebrow fw-bold text-uppercase">Personal Information:</h5>
-                            <span class="info-span fw-bold text-muted small">Full Name: </span>
-                            <span class="info-span">Email: </span>
-                            <span class="info-span">Contact Number: </span>
-                            <span class="info-span">Birthdate: </span>
+                            <h5 class="profile-eyebrow fw-bold text-uppercase">Personal Information</h5>
+                            <span class="info-span text-muted fw-bold">
+                                Email: 
+                            </span>
+                            <span>
+                                Password: 
+                            </span>
                         </div>
                         <button class="btn btn-outline-primary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#passwordModal">
                             Edit Profile
@@ -226,9 +247,22 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4 w-100">
-                <div class="profile-settings card h-100 shadow-sm border-0">
-                    dasd
+            <div class="col-12 col-lg-8 w-100">
+                <div class="profile-settings card h-100 shadow-sm border-0 p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="d-flex flex-column">
+                            <h5 class="profile-eyebrow fw-bold text-uppercase">Manage Profile</h5>
+                            <span class="info-span text-muted fw-bold">
+                                Fullname: 
+                            </span>
+                            <span>
+                                Student ID: 
+                            </span>
+                        </div>
+                        <button class="btn btn-outline-secondary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#profileModal">
+                            Edit Profile
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -237,6 +271,33 @@ unset($_SESSION['flash_message'], $_SESSION['flash_badge']);
                 </div>
             </div>
         </section>
+        
+        <div class="modal fade" id="profileModal" tab-index="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+                    <form action="actions/change-profile.php" method="POST">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title fw-bold">MANAGE PROFILE</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column gap-3">
+                            <div>
+                                <label for="fullname" class="form-label text-uppercase fw-bold">Fullname</label>
+                                <input type="text" name="fullname" id="fullname" class="form-control" value="<?php echo htmlspecialchars($fullname); ?>">
+                            </div>
+                            <div>
+                                <label for="studentID" class="form-label text-uppercase">STUDENT ID</label>
+                                <input type="text" name="studentID" id="studentID" class="form-control" readonly value="TVAM-XXXX">
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0">
+                            <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-outline-success" name="change_name">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">

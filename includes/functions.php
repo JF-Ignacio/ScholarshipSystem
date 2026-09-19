@@ -131,8 +131,6 @@ function ProfileUpload($conn, int $userID, array $file): array {
         @unlink($destination);
         return ['success' => false, 'message' => 'DB error: ' . $stmt->error];
     }
-
-    activityLogs($conn, $userID, 'Profiile Picture updated');
     return ['success' => true, 'message' => 'Upload Succeded.'];
 }
 
@@ -153,7 +151,6 @@ function CreateDescription($conn, int $userID, $description) {
         return ['success' => false, 'message' => 'Upload failed. Try again.'];
     }
 
-    activityLogs($conn, $userID, 'Profile Description added.');
     return ['success' => true, 'message' => 'Description Added'];
 }
 ?>
