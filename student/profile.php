@@ -104,6 +104,8 @@ $stmt_information->execute();
 $studentData = $stmt_information->get_result()->fetch_assoc();
 
 $fullname = $studentData['fullname'] ?? ($_SESSION['fullname'] ?? 'TVAM Student'); 
+$studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
+
 ?>
 
 <!DOCTYPE html>
@@ -228,16 +230,18 @@ $fullname = $studentData['fullname'] ?? ($_SESSION['fullname'] ?? 'TVAM Student'
         <!--PROFILE MANAGEMENT = CHANGING NAME AND PASSWORD -->
         <section class="manage-profile-cards row g-2 mt-2">
 
-            <div class="col-12 col-lg-8 w-100">
+            <div class="col-12 col-lg-4 w-100">
                 <div class="profile-settings card h-100 shadow-sm border-0 p-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
                             <h5 class="profile-eyebrow fw-bold text-uppercase">Personal Information</h5>
                             <span class="info-span text-muted fw-bold">
-                                Email: 
+                                Email:
+                                <small class="fw-bold text-dark"><?php echo htmlspecialchars($studentData['email']); ?></small>
                             </span>
                             <span>
-                                Password: 
+                                Scholar: 
+                                <small class="fw-bold text-dark"> <?php echo htmlspecialchars($studentData['scholarship_type']); ?></small>
                             </span>
                         </div>
                         <button class="btn btn-outline-primary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#passwordModal">
@@ -247,16 +251,16 @@ $fullname = $studentData['fullname'] ?? ($_SESSION['fullname'] ?? 'TVAM Student'
                 </div>
             </div>
 
-            <div class="col-12 col-lg-8 w-100">
+            <div class="col-12 col-lg-4 w-100">
                 <div class="profile-settings card h-100 shadow-sm border-0 p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
                             <h5 class="profile-eyebrow fw-bold text-uppercase">Manage Profile</h5>
                             <span class="info-span text-muted fw-bold">
-                                Fullname: 
+                                Fullname: <small class="fw-bold text-dark"><?php echo htmlspecialchars($fullname); ?> </small>
                             </span>
-                            <span>
-                                Student ID: 
+                            <span class="info-span text-muted fw-bold">
+                                Student ID: <small class="fw-bold text-dark"><?php echo htmlspecialchars($studentID); ?> </small>
                             </span>
                         </div>
                         <button class="btn btn-outline-secondary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#profileModal">
@@ -267,10 +271,51 @@ $fullname = $studentData['fullname'] ?? ($_SESSION['fullname'] ?? 'TVAM Student'
             </div>
 
             <div class="col-12 col-lg-4 w-100">
-                <div class="profile-settings card h-100 shadow-sm border-0">
+                <div class="profile-settings card h-100 shadow-sm border-0 p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="">
+                            <h5 class="profile-eyebrow fw-bold text-uppercase">SUBMIT REQUEST</h5>
+                        </div>
+                        <button type="button" class="btn btn-outline-warning btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#request">
+                            Submit Report
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <div class="modal fade" id="request" tab-index="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow-lg p-3">
+                    <form action="actions/submit-request.php" method="POST" class="form-group">
+                        <div class="modal-header justify-content-between border-0">
+                            <div>
+                                <h5 class="modal-title fw-bold">SUBMIT TICKET REQUEST</h5>
+                                <small class="fst-italic text-muted">Make a problem request that you experienced in this system.</small>
+                            </div>
+                            <div>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                        </div>
+                        <div class="modal-body d-flex flex-column gap-3">
+                            <div>
+                                <label for="request_letter" class="form-label">REPORT</label>
+                                <textarea 
+                                    name="request_letter" 
+                                    id="request_letter"
+                                    class="form-control"
+                                    rows="5"
+                                    maxlength="1000"
+                                    placeholder="Type message here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer border-0 align-items-end">
+                            <button type="submit" class="btn btn-outline-success" name="submitRequest">SUBMIT</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
         
         <div class="modal fade" id="profileModal" tab-index="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
