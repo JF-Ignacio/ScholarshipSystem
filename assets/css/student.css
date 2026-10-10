@@ -481,4 +481,355 @@
     
 }
 
+/* Student profile page */
+.student-profile-page {
+    color: var(--ink, #1f2430);
+}
+
+.student-profile-page .profile-container {
+    width: min(100%, 1240px);
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2rem);
+    gap: 1rem;
+}
+
+.profile-page-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.profile-kicker,
+.profile-label {
+    display: inline-block;
+    color: #b8902f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.profile-page-heading h1 {
+    margin: 0.15rem 0 0.2rem;
+    color: #142238;
+    font-size: clamp(1.9rem, 4vw, 3rem);
+    font-weight: 900;
+    line-height: 1.05;
+}
+
+.profile-page-heading p {
+    max-width: 640px;
+    margin: 0;
+    color: #5b6472;
+    font-size: clamp(0.92rem, 2vw, 1rem);
+    line-height: 1.45;
+}
+
+.profile-id-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.45rem 0.85rem;
+    border: 1px solid rgba(20, 34, 56, 0.12);
+    border-radius: 8px;
+    background: #ffffff;
+    color: #142238;
+    font-size: 0.82rem;
+    font-weight: 800;
+    white-space: nowrap;
+    box-shadow: 0 10px 22px rgba(20, 34, 56, 0.06);
+}
+
+.profile-header-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-header-card .alert {
+    margin: 0;
+    border-radius: 8px;
+    border: 0;
+}
+
+.profile-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.45fr);
+    gap: 1rem;
+    align-items: stretch;
+}
+
+.student-profile-page .card {
+    border-radius: 8px;
+}
+
+.student-profile-page .profile-card,
+.student-profile-page .profile-college,
+.student-profile-page .description-text,
+.student-profile-page .profile-settings {
+    border: 1px solid rgba(20, 34, 56, 0.1) !important;
+    box-shadow: 0 16px 36px rgba(20, 34, 56, 0.08) !important;
+}
+
+.student-profile-page .profile-card {
+    min-height: 210px;
+    flex-direction: row;
+    align-items: center;
+    padding: clamp(1.1rem, 3vw, 1.5rem);
+    background:
+        linear-gradient(135deg, rgba(12, 26, 46, 0.98), rgba(51, 80, 122, 0.9)),
+        #0c1a2e;
+    overflow: hidden;
+}
+
+.student-profile-page .avatar-wrapper {
+    width: clamp(88px, 10vw, 124px);
+    height: clamp(88px, 10vw, 124px);
+    flex: 0 0 auto;
+}
+
+.student-profile-page .avatar-label {
+    margin: 0;
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+}
+
+.student-profile-page .profile-name {
+    min-width: 0;
+    gap: 0.2rem;
+}
+
+.student-profile-page .profile-name h4 {
+    width: 100%;
+    margin: 0;
+    font-size: clamp(1.25rem, 3vw, 1.85rem);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+}
+
+.student-profile-page .profile-name span:not(.profile-label) {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.95rem;
+}
+
+.student-profile-page .profile-college {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 210px;
+    gap: 1.4rem;
+    background:
+        linear-gradient(135deg, rgba(20, 34, 56, 0.96), rgba(47, 104, 70, 0.88)),
+        #142238;
+}
+
+.student-profile-page .profile-college::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent 42%);
+    pointer-events: none;
+}
+
+.student-profile-page .profile-college > * {
+    position: relative;
+}
+
+.student-profile-page .profile-college h4 {
+    max-width: 760px;
+    margin: 0.3rem 0 0;
+    font-size: clamp(1.45rem, 4vw, 2.45rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+}
+
+.profile-college-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.student-profile-page .profile-college-meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 34px;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    font-size: 0.86rem;
+    font-weight: 800;
+}
+
+.student-profile-page .description-section {
+    margin-top: 0 !important;
+    padding: 0 !important;
+}
+
+.student-profile-page .description-text {
+    padding: clamp(1rem, 3vw, 1.6rem) !important;
+    background: #ffffff;
+    gap: 1rem;
+}
+
+.student-profile-page .description-text h5 {
+    margin: 0;
+    color: #142238;
+    font-size: clamp(1.1rem, 3vw, 1.45rem) !important;
+    line-height: 1.2;
+}
+
+.student-profile-page .description-text .text-message {
+    min-height: 160px;
+    height: auto;
+    padding: clamp(1rem, 3vw, 1.25rem) !important;
+    border-color: rgba(20, 34, 56, 0.12);
+    border-left-color: #b8902f;
+    border-radius: 8px;
+    background: #fbfcfd;
+    color: #1f2430;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.student-profile-page .description-text .text-message span:empty::before {
+    content: "No diary entry yet.";
+    color: #7a8494;
+    font-style: italic;
+}
+
+.student-profile-page .btn-text {
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.student-profile-page .btn-text button {
+    min-height: 40px;
+    width: auto;
+    min-width: 112px;
+    border-radius: 8px !important;
+    font-weight: 800;
+}
+
+.student-profile-page .manage-profile-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.student-profile-page .profile-action-item {
+    min-width: 0;
+}
+
+.student-profile-page .profile-settings {
+    min-height: 150px;
+    padding: clamp(1rem, 2.5vw, 1.25rem) !important;
+    background: #ffffff;
+}
+
+.student-profile-page .profile-settings > div {
+    height: 100%;
+    gap: 1rem;
+}
+
+.student-profile-page .profile-eyebrow {
+    color: #142238;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    letter-spacing: 0.05em;
+}
+
+.student-profile-page .profile-settings span,
+.student-profile-page .profile-settings small {
+    overflow-wrap: anywhere;
+}
+
+.student-profile-page .profile-settings .btn {
+    flex: 0 0 auto;
+    border-radius: 8px !important;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.student-profile-page .modal-content {
+    border-radius: 8px !important;
+}
+
+.student-profile-page .form-control,
+.student-profile-page .btn {
+    border-radius: 8px !important;
+}
+
+@media (max-width: 991.98px) {
+    .profile-hero-grid,
+    .student-profile-page .manage-profile-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .student-profile-page .profile-college,
+    .student-profile-page .profile-card {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .student-profile-page .profile-container {
+        padding: 0.85rem;
+    }
+
+    .profile-page-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .profile-id-pill {
+        width: 100%;
+        justify-content: flex-start;
+        white-space: normal;
+    }
+
+    .student-profile-page .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .student-profile-page .profile-name {
+        align-items: center;
+    }
+
+    .student-profile-page .profile-college {
+        padding: 1.1rem !important;
+    }
+
+    .student-profile-page .profile-college-meta {
+        flex-direction: column;
+    }
+
+    .student-profile-page .profile-college-meta span,
+    .student-profile-page .btn-text button,
+    .student-profile-page .profile-settings .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .student-profile-page .btn-text {
+        flex-direction: column;
+    }
+
+    .student-profile-page .profile-settings > div {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .student-profile-page .modal-dialog {
+        margin: 0.75rem;
+    }
+}
+
 

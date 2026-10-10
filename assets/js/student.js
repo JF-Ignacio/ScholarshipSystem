@@ -1,4 +1,3 @@
-
 document.getElementById('filePicture').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -19,4 +18,40 @@ document.getElementById('filePicture').addEventListener('change', function(e) {
 
     // Auto-submit the form so it uploads right after selection
     document.getElementById('profile_form').submit();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const profileForm = document.querySelector('[data-ajax-profile]');
+
+    if (!profileForm) return;
+
+    profileForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const submitButton = profileForm.querySelector('[type="submit"]');
+        const originalText = submitButton ? submitButton.textContent : '';
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Saving...';
+        }
+
+        try {
+            const url = profileForm.dataset.ajaxUrl || profileForm.action;
+            const result = await postForm(url, profileForm);
+
+            alert(result.message);
+
+            if (result.success) {
+                window.location.reload();
+            }
+        } catch (error) {
+            alert('Something went wrong. Please try again.');
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
+        }
+    });
 });

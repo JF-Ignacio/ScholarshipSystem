@@ -153,4 +153,18 @@ function CreateDescription($conn, int $userID, $description) {
 
     return ['success' => true, 'message' => 'Description Added'];
 }
+
+function updateFullname($conn, int $userID, string $fullname): array {
+    $conn->begin_transaction(); 
+
+    try {
+        $stmt = $conn->prepare("UPDATE users SET fullname = ? WHERE id = ?");
+        $stmt->bind_param()
+
+    }
+
+    catch(Throwable $e) {
+
+    }
+}
 ?>

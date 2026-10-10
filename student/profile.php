@@ -120,10 +120,19 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
     <link rel="icon" href="/TVAM_SCHOLARSHIP/assets/images/tvamlogo_web.png">
 </head>
 
-<body class="student-layout">
+<body class="student-layout student-profile-page">
     <?php include "../includes/sidebar-student.php";?>
 
-    <div class="profile-container container-fluid d-flex flex-column p-4">
+    <div class="profile-container container-fluid d-flex flex-column">
+        <section class="profile-page-heading">
+            <div>
+                <span class="profile-kicker">Student Portal</span>
+                <h1>Profile</h1>
+                <p>Manage your student identity, profile wall, and account requests.</p>
+            </div>
+            <span class="profile-id-pill"><?php echo htmlspecialchars($studentID); ?></span>
+        </section>
+
         <section class="profile-header-card">
             <?php if($message) : ?>
                 <div class="alert alert-<?php echo htmlspecialchars($badge); ?>">
@@ -133,40 +142,43 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
                 </div>
             <?php endif; ?>
 
-            <div class="row mb-0 g-2">
-                <div class="col-12 col-lg-4">
-                    <div class="profile-card card gap-3 h-100">
+            <div class="profile-hero-grid">
+                <div class="profile-card card gap-3 h-100">
 
-                        <form action="" method="POST" enctype="multipart/form-data" id="profile_form">
-                            <div class="avatar-wrapper">
-                                <label for="filePicture" class="avatar-label form-label" >
-                                    <img 
-                                        src="<?php echo $avatarSrc; ?>" 
-                                        alt="Profile Picture"
-                                        class="avatar-img img-fluid"
-                                        id="avatarPreview"
-                                    >
-                                        
-                                    <div class="avatar-overlay">
-                                        <i class="bi bi-camera-fill"></i>
-                                    </div>
-                                </label>
-                                <input type="file" name="file_picture" id="filePicture" accept="image/png, image/jpeg, image/webp" hidden>
-                            </div>
-                        </form>
-
-                        <div class="profile-name">
-                            <h4 class="fw-bold"><?php echo htmlspecialchars($fullname); ?></h4>
-                            <span>Personalized your profile wall</span>
+                    <form action="" method="POST" enctype="multipart/form-data" id="profile_form">
+                        <div class="avatar-wrapper">
+                            <label for="filePicture" class="avatar-label form-label" >
+                                <img 
+                                    src="<?php echo $avatarSrc; ?>" 
+                                    alt="Profile Picture"
+                                    class="avatar-img img-fluid"
+                                    id="avatarPreview"
+                                >
+                                    
+                                <div class="avatar-overlay">
+                                    <i class="bi bi-camera-fill"></i>
+                                </div>
+                            </label>
+                            <input type="file" name="file_picture" id="filePicture" accept="image/png, image/jpeg, image/webp" hidden>
                         </div>
+                    </form>
+
+                    <div class="profile-name">
+                        <span class="profile-label">Scholar Profile</span>
+                        <h4 class="fw-bold"><?php echo htmlspecialchars($fullname); ?></h4>
+                        <span>Personalize your profile wall</span>
                     </div>
                 </div>
 
-                <div class="col-12 col-lg-8">
-                    <div class="profile-college card p-4 h-100">
+                <div class="profile-college card p-4 h-100">
+                    <div>
+                        <span class="profile-label">Academic Track</span>
                         <h4 class="text-uppercase fw-bold">College of Industrial Education</h4>
+                    </div>
+                    <div class="profile-college-meta">
                         <span class="college-section">COMPRO</span>
-                        <span>Batch 2024 - 2028</span>
+                        <span><?php echo htmlspecialchars($studentData['course'] ?? 'Course not set'); ?></span>
+                        <span><?php echo htmlspecialchars($studentData['year_level'] ?? 'Year level not set'); ?></span>
                     </div>
                 </div>
             </div>
@@ -228,30 +240,30 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
         </section>
 
         <!--PROFILE MANAGEMENT = CHANGING NAME AND PASSWORD -->
-        <section class="manage-profile-cards row g-2 mt-2">
+        <section class="manage-profile-cards mt-2">
 
-            <div class="col-12 col-lg-4 w-100">
+            <div class="profile-action-item">
                 <div class="profile-settings card h-100 shadow-sm border-0 p-3">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
                             <h5 class="profile-eyebrow fw-bold text-uppercase">Personal Information</h5>
                             <span class="info-span text-muted fw-bold">
                                 Email:
-                                <small class="fw-bold text-dark"><?php echo htmlspecialchars($studentData['email']); ?></small>
+                                <small class="fw-bold text-dark"><?php echo htmlspecialchars($studentData['email'] ?? 'Not set'); ?></small>
                             </span>
                             <span>
                                 Scholar: 
-                                <small class="fw-bold text-dark"> <?php echo htmlspecialchars($studentData['scholarship_type']); ?></small>
+                                <small class="fw-bold text-dark"> <?php echo htmlspecialchars($studentData['scholarship_type'] ?? 'Not set'); ?></small>
                             </span>
                         </div>
                         <button class="btn btn-outline-primary btn-sm rounded-3" data-bs-toggle="modal" data-bs-target="#passwordModal">
-                            Edit Profile
+                            Change Password
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4 w-100">
+            <div class="profile-action-item">
                 <div class="profile-settings card h-100 shadow-sm border-0 p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="d-flex flex-column">
@@ -270,7 +282,7 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
                 </div>
             </div>
 
-            <div class="col-12 col-lg-4 w-100">
+            <div class="profile-action-item">
                 <div class="profile-settings card h-100 shadow-sm border-0 p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="">
@@ -284,7 +296,7 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
             </div>
         </section>
 
-        <div class="modal fade" id="request" tab-index="-1" aria-hidden="true">
+        <div class="modal fade" id="request" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 rounded-4 shadow-lg p-3">
                     <form action="actions/submit-request.php" method="POST" class="form-group">
@@ -317,10 +329,10 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
             </div>
         </div>
         
-        <div class="modal fade" id="profileModal" tab-index="-1" aria-hidden="true">
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 rounded-4 shadow-lg p-3">
-                    <form action="actions/change-profile.php" method="POST">
+                    <form action="actions/change-profile.php" method="POST" data-ajax-profile data-ajax-url="/TVAM_SCHOLARSHIP/student/api/profile.php">
                         <div class="modal-header border-0">
                             <h5 class="modal-title fw-bold">MANAGE PROFILE</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -332,7 +344,7 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
                             </div>
                             <div>
                                 <label for="studentID" class="form-label text-uppercase">STUDENT ID</label>
-                                <input type="text" name="studentID" id="studentID" class="form-control" readonly value="TVAM-XXXX">
+                                <input type="text" name="studentID" id="studentID" class="form-control" readonly value="<?php echo htmlspecialchars($studentID); ?>">
                             </div>
                         </div>
                         <div class="modal-footer border-0">
@@ -409,6 +421,8 @@ $studentID = $studentData['student_id'] ?? 'TVAM-XXXX';
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/TVAM_SCHOLARSHIP/assets/js/ajax.js"></script>
     <script src="/TVAM_SCHOLARSHIP/assets/js/student.js"></script>
+
 </body>
 </html>
